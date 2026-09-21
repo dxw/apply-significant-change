@@ -1,0 +1,63 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Explain why the proprietor cannot continue to comply with the Regulatory Reform (Fire Safety) Order 2005 – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/fire-safety-explain-submit" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Enter why the proprietor cannot continue to comply with the Regulatory Reform (Fire Safety) Order 2005",
+                href: "#fire-safety-explain"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukCharacterCount({
+          id: "fire-safety-explain",
+          name: "fireSafetyExplain",
+          maxlength: 2000,
+          label: {
+            text: "Explain why the proprietor cannot continue to comply with the Regulatory Reform (Fire Safety) Order 2005",
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          errorMessage: {
+            text: "Enter why the proprietor cannot continue to comply with the Regulatory Reform (Fire Safety) Order 2005"
+          } if errors
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

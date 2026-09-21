@@ -1,0 +1,149 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Apply to make a tier 1 significant change – GOV.UK
+{% endblock %}
+
+{% block header %}
+  <header>
+    {{govukHeader()}}
+  </header>
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Home",
+        href: "#"
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-xl">Apply to make a tier 1 significant change</h1>
+
+      <p class="govuk-body">Use this service to apply to make one or multiple tier 1 significant changes to a single academy.</p>
+      <p class="govuk-body">A tier one significant change is:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>increasing or decreasing existing mainstream or SEN pupil places</li>
+        <li>adding or removing a provision</li>
+        <li>adding or removing a satellite site or move the academy to another site</li>
+        <li>changing the gender composition of the academy</li>
+        <li>changing the age range of the academy</li>
+        <li>changing the type of SEN provision</li>
+        <li>adding or removing boarding provision</li>
+      </ul>
+
+      {% set mainstreamHtml %}
+        <p class="govuk-body">If you're increasing or decreasing mainstream places, a threshold applies.</p>
+        <p class="govuk-body">Adding 31 or more mainstream places is a tier 1 significant change.</p>
+        <p class="govuk-body">The threshold is cumulative. This means that if places have been added in the past, this will need to be taken into account</p>
+      {% endset %}
+
+      {{ govukDetails({
+        summaryText: "Increasing or decreasing mainstream pupil places",
+        html: mainstreamHtml
+      }) }}
+
+      {% set senPlacesHtml %}
+        <p class="govuk-body">If you're increasing or decreasing SEN places, a threshold applies.</p>
+        <p class="govuk-body">Adding 21 or more places or a 20% increase in the current number of places (whichever is smaller) is a tier 1 significant change.</p>
+        <p class="govuk-body">The threshold is cumulative. This means that if places have been added in the past, this will need to be taken into account</p>
+      {% endset %}
+
+      {{ govukDetails({
+        summaryText: "Increasing or decreasing SEN pupil places",
+        html: senPlacesHtml
+      }) }}
+
+      {% set provisionHtml %}
+        <p class="govuk-body">If you are adding a new provision or removing one completely, it is often a tier 1 significant change.</p>
+        <p class="govuk-body">It is a significant change to add:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>a sixth form</li>
+          <li>boarding</li>
+          <li>a SEN unit</li>
+          <li>a resourced provision</li>
+        </ul>
+        <p class="govuk-body">Adding a new nursery is not a tier 1 significant change.</p>
+        <p class="govuk-body">It is a significant change to remove:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>a sixth form</li>
+          <li>boarding</li>
+          <li>a SEN unit</li>
+          <li>a resourced provision</li>
+          <li>a nursery</li>
+        </ul>
+      {% endset %}
+
+      {{ govukDetails({
+        summaryText: "Adding or removing mainstream or SEN provision",
+        html: provisionHtml
+      }) }}
+
+      {% set satelliteHtml %}
+        <p class="govuk-body">Adding or removing a satellite site is always a tier 1 significant change.</p>
+        <p class="govuk-body">If the academy is moving to another site, it's not a significant change if the new site is adjacent to the existing site.</p>
+      {% endset %}
+
+      {{ govukDetails({
+        summaryText: "Adding or removing a satellite site or moving an academy to another site",
+        html: satelliteHtml
+      }) }}
+
+      <h2 class="govuk-heading-l">Who can use this service</h2>
+      <p class="govuk-body">Only academy trusts should use this service. Local authorities should not use this service, even if the change or changes are being proposed at their request.</p>
+      <p class="govuk-body">To use this service, you must be the:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>chair of the academy trust</li>
+        <li>CEO of the academy trust</li>
+        <li>accounting officer of the academy trust</li>
+      </ul>
+
+      <h2 class="govuk-heading-l">Before you start</h2>
+      <p class="govuk-body">Before you start using this service, it's important to <a class="govuk-link" href="#">read the guidance on making a significant change</a>.</p>
+      <p class="govuk-body">You must have completed a 3 week consultation or be in the process of running one.</p>
+      <p class="govuk-body">When you're using the service, you'll need to upload some documents. These include:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>evidence that there are no objection to the change or changes by a local authority</li>
+        <li>evidence of consultation outcomes if the consultation is complete</li>
+      </ul>
+      <p class="govuk-body">If you require consent from a religious body to make the change or changes, you will also need to upload evidence you have this.</p>
+
+      {{ govukButton({
+        text: "Start now",
+        href: "/has-change-been-made",
+        isStartButton: true
+      }) }}
+
+      <h2 class="govuk-heading-l">After you apply</h2>
+      <p class="govuk-body">After the application has been submitted, a DfE delivery officer will contact you. They might need to ask for more information to process the application.</p>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+
+      <aside class="govuk-prototype-kit-common-templates-related-items" role="complementary">
+        <h2 class="govuk-heading-m" id="subsection-title">
+          Related content
+        </h2>
+        <nav role="navigation" aria-labelledby="subsection-title">
+          <ul class="govuk-list govuk-!-font-size-16">
+            <li><a href="#">Significant change guidance</a></li>
+            <li><a href="#">Consultation guidance</a></li>
+            <li><a href="#">Apply to make a Tier 3 significant change</a></li>
+            <li><a href="#">How to run a consultation</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+    </div>
+  </div>
+
+{% endblock %}

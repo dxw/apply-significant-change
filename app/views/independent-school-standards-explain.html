@@ -1,0 +1,63 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Explain why the academy cannot continue to meet the independent school standards – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/independent-school-standards-explain-submit" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Enter why the academy cannot continue to meet the independent school standards",
+                href: "#iss-explain"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukCharacterCount({
+          id: "iss-explain",
+          name: "issExplain",
+          maxlength: 2000,
+          label: {
+            text: "Explain why the academy cannot continue to meet the independent school standards",
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          errorMessage: {
+            text: "Enter why the academy cannot continue to meet the independent school standards"
+          } if errors
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Will the proprietor continue to ensure compliance with the Regulatory Reform (Fire Safety) Order 2005? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/fire-safety-compliance-next" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Select yes or no",
+                href: "#fire-safety"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukRadios({
+          idPrefix: "fire-safety",
+          name: "fireSafety",
+          fieldset: {
+            legend: {
+              text: "Will the proprietor continue to ensure compliance with the Regulatory Reform (Fire Safety) Order 2005?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          errorMessage: {
+            text: "Select yes or no"
+          } if errors,
+          items: [
+            { value: "yes", text: "Yes" },
+            { value: "no", text: "No" }
+          ]
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

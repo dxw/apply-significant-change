@@ -1,0 +1,60 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Further details – SEN provision – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/sen-further-details-submit" method="post">
+
+        <h1 class="govuk-heading-l">Further details – SEN provision</h1>
+
+        {{ govukCharacterCount({
+          id: "sen-access",
+          name: "senAccess",
+          maxlength: 2000,
+          label: { text: "Explain how the change will impact access to education and support for children and young people with SEN" }
+        }) }}
+
+        {{ govukCharacterCount({
+          id: "sen-staff",
+          name: "senStaff",
+          maxlength: 2000,
+          label: { text: "Explain how the change will impact access to specialist staff and support" }
+        }) }}
+
+        {{ govukCharacterCount({
+          id: "sen-accommodation",
+          name: "senAccommodation",
+          maxlength: 2000,
+          label: { text: "Explain how the change will impact access to suitable accommodation" }
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

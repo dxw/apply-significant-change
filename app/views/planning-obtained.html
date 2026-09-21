@@ -1,0 +1,69 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Has planning permission been obtained? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/planning-obtained-next" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Select yes, no or not applicable",
+                href: "#planning-obtained"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukRadios({
+          idPrefix: "planning-obtained",
+          name: "planningObtained",
+          fieldset: {
+            legend: {
+              text: "Has planning permission been obtained?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          errorMessage: {
+            text: "Select yes, no or not applicable"
+          } if errors,
+          items: [
+            { value: "yes", text: "Yes" },
+            { value: "no", text: "No" },
+            { value: "not-applicable", text: "Not applicable" }
+          ]
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

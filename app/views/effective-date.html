@@ -1,0 +1,67 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  What is the effective date of the change? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/effective-date-next" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Enter the effective date of the change",
+                href: "#effective-date-day"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukDateInput({
+          id: "effective-date",
+          namePrefix: "effective-date",
+          fieldset: {
+            legend: {
+              text: "What is the effective date of the change?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          hint: {
+            text: "For example, 27 3 2024"
+          },
+          errorMessage: {
+            text: "Enter the effective date of the change"
+          } if errors
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

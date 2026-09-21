@@ -1,0 +1,63 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Explain why consent has not been secured – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/religious-consent-explain-submit" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Enter why consent has not been secured",
+                href: "#religious-consent-explain"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukCharacterCount({
+          id: "religious-consent-explain",
+          name: "religiousConsentExplain",
+          maxlength: 2000,
+          label: {
+            text: "Explain why consent has not been secured",
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          errorMessage: {
+            text: "Enter why consent has not been secured"
+          } if errors
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

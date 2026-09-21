@@ -1,0 +1,161 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Check your answers – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">Check your answers before submitting your application</h1>
+
+      <h2 class="govuk-heading-m">About the trust and academy</h2>
+      {{ govukSummaryList({
+        rows: [
+          {
+            key: { text: "Trust name" },
+            value: { text: data['trustName'] },
+            actions: { items: [{ href: "/trust-name", text: "Change", visuallyHiddenText: "trust name" }] }
+          },
+          {
+            key: { text: "Companies House number" },
+            value: { text: data['companiesHouseNumber'] },
+            actions: { items: [{ href: "/companies-house-number", text: "Change", visuallyHiddenText: "Companies House number" }] }
+          },
+          {
+            key: { text: "Academy name" },
+            value: { text: data['academyName'] },
+            actions: { items: [{ href: "/academy-name", text: "Change", visuallyHiddenText: "academy name" }] }
+          },
+          {
+            key: { text: "Academy URN" },
+            value: { text: data['academyUrn'] },
+            actions: { items: [{ href: "/academy-urn", text: "Change", visuallyHiddenText: "academy URN" }] }
+          },
+          {
+            key: { text: "Local authority" },
+            value: { text: data['localAuthority'] },
+            actions: { items: [{ href: "/local-authority", text: "Change", visuallyHiddenText: "local authority" }] }
+          },
+          {
+            key: { text: "Academy type" },
+            value: { text: data['academyType'] },
+            actions: { items: [{ href: "/academy-type", text: "Change", visuallyHiddenText: "academy type" }] }
+          }
+        ]
+      }) }}
+
+      <h2 class="govuk-heading-m">Your details</h2>
+      {{ govukSummaryList({
+        rows: [
+          {
+            key: { text: "Your role" },
+            value: { text: data['yourRole'] },
+            actions: { items: [{ href: "/your-role", text: "Change", visuallyHiddenText: "your role" }] }
+          },
+          {
+            key: { text: "Full name" },
+            value: { text: data['fullName'] },
+            actions: { items: [{ href: "/full-name", text: "Change", visuallyHiddenText: "full name" }] }
+          },
+          {
+            key: { text: "Email address" },
+            value: { text: data['yourEmail'] },
+            actions: { items: [{ href: "/email-addresses", text: "Change", visuallyHiddenText: "email address" }] }
+          },
+          {
+            key: { text: "Phone number" },
+            value: { text: data['phoneNumber'] },
+            actions: { items: [{ href: "/phone-number", text: "Change", visuallyHiddenText: "phone number" }] }
+          }
+        ]
+      }) }}
+
+      <h2 class="govuk-heading-m">The significant change</h2>
+      {{ govukSummaryList({
+        rows: [
+          {
+            key: { text: "Change type" },
+            value: { text: data['whichChange'] },
+            actions: { items: [{ href: "/which-change", text: "Change", visuallyHiddenText: "change type" }] }
+          },
+          {
+            key: { text: "Reason for change" },
+            value: { text: data['reason'] },
+            actions: { items: [{ href: "/about-significant-change", text: "Change", visuallyHiddenText: "reason for change" }] }
+          },
+          {
+            key: { text: "Effective date" },
+            value: { text: data['effective-date-day'] + "/" + data['effective-date-month'] + "/" + data['effective-date-year'] },
+            actions: { items: [{ href: "/effective-date", text: "Change", visuallyHiddenText: "effective date" }] }
+          },
+          {
+            key: { text: "Consultation completed" },
+            value: { text: data['consultationCompleted'] },
+            actions: { items: [{ href: "/consultation-completed", text: "Change", visuallyHiddenText: "consultation completed" }] }
+          },
+          {
+            key: { text: "Local authority objections" },
+            value: { text: data['laObjections'] },
+            actions: { items: [{ href: "/local-authority-objections", text: "Change", visuallyHiddenText: "local authority objections" }] }
+          },
+          {
+            key: { text: "Funding required" },
+            value: { text: data['fundingRequired'] },
+            actions: { items: [{ href: "/funding-required", text: "Change", visuallyHiddenText: "funding required" }] }
+          },
+          {
+            key: { text: "Religious body consent required" },
+            value: { text: data['religiousConsentRequired'] },
+            actions: { items: [{ href: "/religious-consent-required", text: "Change", visuallyHiddenText: "religious body consent required" }] }
+          },
+          {
+            key: { text: "Planning permission or land transaction required" },
+            value: { text: data['planningRequired'] },
+            actions: { items: [{ href: "/planning-required", text: "Change", visuallyHiddenText: "planning permission or land transaction required" }] }
+          },
+          {
+            key: { text: "Admissions variation needed" },
+            value: { text: data['admissionsVariation'] },
+            actions: { items: [{ href: "/admissions-variation", text: "Change", visuallyHiddenText: "admissions variation needed" }] }
+          },
+          {
+            key: { text: "Recent Ofsted inspection" },
+            value: { text: data['ofstedInspection'] },
+            actions: { items: [{ href: "/ofsted-inspection", text: "Change", visuallyHiddenText: "recent Ofsted inspection" }] }
+          },
+          {
+            key: { text: "Eligible for intervention measures" },
+            value: { text: data['interventionEligible'] },
+            actions: { items: [{ href: "/intervention-eligible", text: "Change", visuallyHiddenText: "eligible for intervention measures" }] }
+          },
+          {
+            key: { text: "Public Sector Equality Duty statement" },
+            value: { text: data['equalityDuty'] },
+            actions: { items: [{ href: "/equality-duty", text: "Change", visuallyHiddenText: "Public Sector Equality Duty statement" }] }
+          }
+        ]
+      }) }}
+
+      <h2 class="govuk-heading-m">Now submit your application</h2>
+      <p class="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
+
+      <form class="form" action="/confirmation" method="post">
+        {{ govukButton({
+          text: "Accept and submit"
+        }) }}
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

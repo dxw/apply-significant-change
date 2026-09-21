@@ -1,0 +1,79 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Has a 3 week consultation been completed? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/consultation-completed-next-page" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Select yes or no, but a consultation is currently in progress",
+                href: "#consultation-completed"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukRadios({
+          idPrefix: "consultation-completed",
+          name: "consultationCompleted",
+          fieldset: {
+            legend: {
+              text: "Has a 3 week consultation been completed?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          hint: {
+            text: "A 3 week consultation must be completed before a significant change can be approved"
+          },
+          errorMessage: {
+            text: "Select yes or no, but a consultation is currently in progress"
+          } if errors,
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "in-progress",
+              text: "No, but a consultation is currently in progress"
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

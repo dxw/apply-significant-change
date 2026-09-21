@@ -1,0 +1,72 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  What is your role? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/your-role-submit" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Select a role",
+                href: "#your-role"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukRadios({
+          idPrefix: "your-role",
+          name: "yourRole",
+          fieldset: {
+            legend: {
+              text: "What is your role?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          hint: {
+            text: "If you have more than one role, select the one most relevant to this application"
+          },
+          errorMessage: {
+            text: "Select a role"
+          } if errors,
+          items: [
+            { value: "chair", text: "Chair of the academy trust" },
+            { value: "ceo", text: "CEO of the academy trust" },
+            { value: "accounting-officer", text: "Accounting officer" }
+          ]
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

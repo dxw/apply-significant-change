@@ -1,0 +1,73 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Which change do you want to make? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/which-change-submit" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Select a significant change",
+                href: "#which-change"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukRadios({
+          idPrefix: "which-change",
+          name: "whichChange",
+          fieldset: {
+            legend: {
+              text: "Which change do you want to make?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          errorMessage: {
+            text: "Select a significant change"
+          } if errors,
+          items: [
+            { value: "boarding", text: "Add or remove a boarding provision" },
+            { value: "satellite", text: "Add or remove a satellite site or move the academy to another site" },
+            { value: "sen-unit", text: "Add or remove a SEN unit or resourced provision", hint: { text: "In a mainstream or AP academy" } },
+            { value: "age-range", text: "Change age range", hint: { text: "Includes adding or removing a sixth form and removing a nursery" } },
+            { value: "gender", text: "Change from single sex to co-educational or co-educational to single sex" },
+            { value: "sen-type", text: "Change the type of SEN provision in a mainstream, special or AP academy" },
+            { value: "pupil-places", text: "Increase or decrease existing mainstream or SEN pupil places", hint: { text: "In a mainstream, special or AP academy" } }
+          ]
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  You need to start a consultation before you use this service – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">You need to start a consultation before you use this service</h1>
+
+      <p class="govuk-body">You should not apply to make a significant change before a 3 week consultation has been started.</p>
+      <p class="govuk-body">A 3 week consultation must be completed before a significant change can be approved.</p>
+      <p class="govuk-body">Guidance on <a class="govuk-link" href="#">how to run a consultation</a> is available.</p>
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Consultation dates – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/consultation-dates-submit" method="post">
+
+        <h1 class="govuk-heading-l">Consultation dates</h1>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "The date your consultation started must be in the past",
+                href: "#consultation-start-day"
+              },
+              {
+                text: "Start date of consultation must include a day",
+                href: "#consultation-start-day"
+              },
+              {
+                text: "Start date of consultation must include a month",
+                href: "#consultation-start-month"
+              },
+              {
+                text: "Start date of consultation must include a year",
+                href: "#consultation-start-year"
+              },
+              {
+                text: "End date of consultation must include a day",
+                href: "#consultation-end-day"
+              },
+              {
+                text: "End date of consultation must include a month",
+                href: "#consultation-end-month"
+              },
+              {
+                text: "End date of consultation must include a year",
+                href: "#consultation-end-year"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukDateInput({
+          id: "consultation-start",
+          namePrefix: "consultation-start",
+          fieldset: {
+            legend: {
+              text: "What was the start date of the consultation?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "For example, 27 3 2024"
+          },
+          errorMessage: {
+            text: "The date your consultation started must be in the past"
+          } if errors
+        }) }}
+
+        {{ govukDateInput({
+          id: "consultation-end",
+          namePrefix: "consultation-end",
+          fieldset: {
+            legend: {
+              text: "When did, or when will the consultation end?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: "For example, 27 3 2024"
+          },
+          errorMessage: {
+            text: "End date of consultation must include a day"
+          } if errors
+        }) }}
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

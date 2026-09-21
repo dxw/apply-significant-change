@@ -1,0 +1,63 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Explain how the impact of the change will be mitigated – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/equality-duty-mitigate-submit" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Enter how the impact of the change will be mitigated",
+                href: "#equality-duty-mitigate"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukCharacterCount({
+          id: "equality-duty-mitigate",
+          name: "equalityDutyMitigate",
+          maxlength: 2000,
+          label: {
+            text: "Explain how the impact of the change will be mitigated",
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          errorMessage: {
+            text: "Enter how the impact of the change will be mitigated"
+          } if errors
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

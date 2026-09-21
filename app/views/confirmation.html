@@ -1,0 +1,27 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Application complete – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {{ govukPanel({
+        titleText: "Application complete",
+        html: "Your reference number<br><strong>" + (data['applicationReference'] or "TSC-2026-0142") + "</strong>"
+      }) }}
+
+      <p class="govuk-body">We have sent you a confirmation email.</p>
+
+      <h2 class="govuk-heading-m">What happens next</h2>
+      <p class="govuk-body">A DfE delivery officer will contact you. They might need to ask for more information to process the application.</p>
+
+      <p class="govuk-body"><a class="govuk-link" href="/">Return to the start page</a></p>
+
+    </div>
+  </div>
+
+{% endblock %}
