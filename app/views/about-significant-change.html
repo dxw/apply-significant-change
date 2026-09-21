@@ -1,0 +1,80 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  About the significant change – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/about-significant-change-submit" method="post">
+
+        <h1 class="govuk-heading-l">About the significant change</h1>
+
+        <p class="govuk-body">Include:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>details of the change being proposed</li>
+          <li>who the change is being made for</li>
+          <li>what will be improved by making the change</li>
+        </ul>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Enter why the change is being made",
+                href: "#reason"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        {{ govukCharacterCount({
+          id: "reason",
+          name: "reason",
+          maxlength: 2000,
+          label: { text: "Why is the change being made?" },
+          errorMessage: { text: "Enter why the change is being made" } if errors
+        }) }}
+
+        {{ govukCharacterCount({
+          id: "who-affected",
+          name: "whoAffected",
+          maxlength: 2000,
+          label: { text: "Who will the change affect?" }
+        }) }}
+
+        {{ govukCharacterCount({
+          id: "what-improved",
+          name: "whatImproved",
+          maxlength: 2000,
+          label: { text: "What will be improved by making the change?" }
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}
