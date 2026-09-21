@@ -1,15 +1,8 @@
-//
-// For guidance on how to create routes see:
-// https://prototype-kit.service.gov.uk/docs/create-routes
-//
-
-const govukPrototypeKit = require('govuk-prototype-kit')
-const router = govukPrototypeKit.requests.setupRouter()
-
-// Add your routes here
+// Full route logic for the Tier 1 significant change application.
+// Copy this into app/routes.js (replaces the previous routes-snippet.js content).
 
 // --- Has the change already been made? ---
-router.post('/consultation-completed', function (req, res) {
+router.post('/path/of/next/page', function (req, res) {
   const answer = req.session.data['hasChangeBeenMade']
   if (answer !== 'yes' && answer !== 'no') {
     return res.render('has-change-been-made', { errors: true })
@@ -17,8 +10,7 @@ router.post('/consultation-completed', function (req, res) {
   res.redirect(answer === 'no' ? '/contacted-do' : '/consultation-completed')
 })
 
-// --- Has delivery officer been contacted ---
-router.post('/consultation-completed', function (req, res) {
+router.post('/contacted-do-next-page', function (req, res) {
   const contactedDo = req.session.data['contactedDo']
   res.redirect(contactedDo === 'no' ? '/contact-do-warning' : '/consultation-completed')
 })
@@ -32,14 +24,7 @@ router.post('/consultation-completed-next-page', function (req, res) {
   res.redirect(consultationCompleted === 'no' ? '/consultation-not-started' : '/consultation-dates')
 })
 
-// consultation date form validation
 router.post('/consultation-dates-submit', function (req, res) {
-  const d = req.session.data
-  const missing = !d['consultation-start-day'] || !d['consultation-start-month'] || !d['consultation-start-year'] ||
-    !d['consultation-end-day'] || !d['consultation-end-month'] || !d['consultation-end-year']
-  if (missing) {
-    return res.render('consultation-dates', { errors: true })
-  }
   res.redirect('/trust-name')
 })
 
@@ -126,7 +111,7 @@ router.post('/sen-further-details-submit', function (req, res) {
 })
 
 router.post('/effective-date-next', function (req, res) {
-  if (!req.session.data['effective-date-day']) {
+  if (!req.session.data['effectiveDate-day']) {
     return res.render('effective-date', { errors: true })
   }
   const consultationCompleted = req.session.data['consultationCompleted']
@@ -333,5 +318,3 @@ router.post('/confirmation', function (req, res) {
   req.session.data['applicationReference'] = 'TSC-2026-0142'
   res.render('confirmation')
 })
-
-
