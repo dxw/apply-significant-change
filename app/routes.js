@@ -14,11 +14,11 @@ router.post('/consultation-completed', function (req, res) {
   if (answer !== 'yes' && answer !== 'no') {
     return res.render('has-change-been-made', { errors: true })
   }
-  res.redirect(answer === 'no' ? '/contacted-do' : '/consultation-completed')
+  res.redirect(answer === 'yes' ? '/contacted-do' : '/next-question-page')
 })
 
 // --- Has delivery officer been contacted ---
-router.post('/consultation-completed', function (req, res) {
+router.post('/contacted-do-next-page', function (req, res) {
   const contactedDo = req.session.data['contactedDo']
   res.redirect(contactedDo === 'no' ? '/contact-do-warning' : '/consultation-completed')
 })
