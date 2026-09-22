@@ -112,6 +112,10 @@ router.post('/about-significant-change-submit', function (req, res) {
   if (!req.session.data['reason']) {
     return res.render('about-significant-change', { errors: true })
   }
+  res.redirect(req.session.data['whatDoYouPlanToDo'] === 'add' ? '/boarding-further-details' : '/sen-impact')
+})
+
+router.post('/boarding-further-details-submit', function (req, res) {
   res.redirect('/sen-impact')
 })
 

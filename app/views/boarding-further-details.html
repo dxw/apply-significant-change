@@ -1,0 +1,51 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Further details – boarding – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/boarding-further-details-submit" method="post">
+
+        <h1 class="govuk-heading-l">Further details – boarding</h1>
+
+        {{ govukCharacterCount({
+          id: "boarding-governance",
+          name: "boardingGovernance",
+          maxlength: 2000,
+          label: { text: "Explain how the trust has the appropriate experience and governance arrangements in place to support this change" }
+        }) }}
+
+        {{ govukCharacterCount({
+          id: "boarding-leadership",
+          name: "boardingLeadership",
+          maxlength: 2000,
+          label: { text: "Provide details of any leadership or governance changes proposed to facilitate this change" }
+        }) }}
+
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}
