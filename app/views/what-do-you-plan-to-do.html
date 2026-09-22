@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-  What is your role? – Tier 1 significant change application – GOV.UK
+  What do you plan to do? – Tier 1 significant change application – GOV.UK
 {% endblock %}
 
 {% block containerStart %}
@@ -16,44 +16,38 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form class="form" action="/your-role-submit" method="post">
+      <form class="form" action="/what-do-you-plan-to-do-submit" method="post">
 
         {% if errors %}
           {{ govukErrorSummary({
             titleText: "There is a problem",
             errorList: [
               {
-                text: "Select a role",
-                href: "#your-role"
+                text: "Select what you plan to do",
+                href: "#what-do-you-plan-to-do"
               }
             ]
           }) }}
         {% endif %}
 
-        {{ govukCheckboxes({
-          idPrefix: "your-role",
-          name: "yourRole",
+        {{ govukRadios({
+          idPrefix: "what-do-you-plan-to-do",
+          name: "whatDoYouPlanToDo",
           fieldset: {
             legend: {
-              text: "What is your role?",
+              text: "What do you plan to do?",
               isPageHeading: true,
               classes: "govuk-fieldset__legend--l"
             }
           },
-          hint: {
-            text: "If you have more than one role, select the one most relevant to this application"
-          },
           errorMessage: {
-            text: "Select a role"
+            text: "Select what you plan to do"
           } if errors,
           items: [
-            { value: "chair", text: "Chair of the academy trust" },
-            { value: "ceo", text: "CEO of the academy trust" },
-            { value: "accounting-officer", text: "Accounting officer" }
+            { value: "add", text: "Add a new boarding provision" },
+            { value: "remove", text: "Completely remove a boarding provision" }
           ]
         }) }}
-
-
 
         {{ govukButton({
           text: "Continue"
