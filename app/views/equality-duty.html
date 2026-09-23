@@ -18,8 +18,6 @@
 
       <form class="form" action="/equality-duty-next" method="post">
 
-        <p class="govuk-body">You must confirm that any of these statements is correct if you're aware of the considerations of the Public Sector Equality Duty.</p>
-
         {% if errors %}
           {{ govukErrorSummary({
             titleText: "There is a problem",
@@ -45,9 +43,12 @@
           errorMessage: {
             text: "Select the statement that is correct"
           } if errors,
+          hint: {
+            text: "You must confirm that one of these statements is correct following your consideration of the equalities duty"
+          },
           items: [
             { value: "unlikely", text: "Unlikely to affect disproportionately any particular person or group who share protected characteristics" },
-            { value: "some-impact", text: "There are some impacts but an evidence analysis indicates the changes will not affect disproportionately any particular person or group who share protected characteristics" },
+            { value: "some-impact", text: "There are some impacts but on balance analysis indicates the changes will not affect disproportionately any particular person or group who share protected characteristics" },
             { value: "likely", text: "Likely to affect disproportionately any particular person or group who share protected characteristics" }
           ]
         }) }}
