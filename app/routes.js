@@ -730,7 +730,21 @@ router.post('/v3/equality-duty-mitigate-submit', function (req, res) {
 })
 
 // --- Submit ---
+function v3AllComplete (data) {
+  const consultationDone = data['v3-task-consultation-status'] === 'completed'
+  return V3_SECTIONS.every(section => section.items.every(([id]) => {
+    if (data['v3-task-' + id] === 'completed') return true
+    const notNeeded = (id === 'consultation-summary' || id === 'consultation-evidence') && consultationDone && data['consultationCompleted'] !== 'yes'
+    return notNeeded
+  }))
+}
+
+router.get('/v3/check-answers', function (req, res) {
+  res.render('v3/check-answers', { allComplete: v3AllComplete(req.session.data) })
+})
+
 router.post('/v3/confirmation', function (req, res) {
+  if (!v3AllComplete(req.session.data)) return res.redirect('/v3/check-answers')
   req.session.data['applicationReference'] = 'TSC-2026-0142'
   res.render('v3/confirmation')
 })
