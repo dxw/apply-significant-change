@@ -1,0 +1,144 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {{ "Error: " if errors }}What is the name of the academy? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v3/academy-name-submit" method="post" autocomplete="off">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Enter the name of the academy",
+                href: "#academy-name"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        <div class="trust-autocomplete" style="position: relative;">
+          <span class="govuk-caption-l">Academy</span>
+          {{ govukInput({
+            id: "academy-name",
+            name: "academyName",
+            label: {
+              text: "What is the name of the academy?",
+              isPageHeading: true,
+              classes: "govuk-label--l"
+            },
+            hint: {
+              text: "Enter at least 3 characters to search for the academy name"
+            },
+            attributes: {
+              placeholder: "Start typing to search for the name of the academy",
+              role: "combobox",
+              "aria-autocomplete": "list",
+              "aria-expanded": "false",
+              "aria-controls": "academy-name-listbox"
+            },
+            errorMessage: {
+              text: "Enter the name of the academy"
+            } if errors
+          }) }}
+          <ul id="academy-name-listbox" role="listbox" hidden
+            style="position: absolute; left: 0; right: 0; margin: -30px 0 0; padding: 0; list-style: none; background: #ffffff; border: 2px solid #0b0c0c; border-top: 0; max-height: 300px; overflow-y: auto; z-index: 10;"></ul>
+        </div>
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+  (function () {
+    var academies = {{ academies | dump | safe }}
+    var input = document.getElementById('academy-name')
+    var list = document.getElementById('academy-name-listbox')
+    var active = -1
+
+    function close () {
+      list.hidden = true
+      list.innerHTML = ''
+      active = -1
+      input.setAttribute('aria-expanded', 'false')
+      input.removeAttribute('aria-activedescendant')
+    }
+
+    function choose (name) {
+      input.value = name
+      close()
+    }
+
+    function highlight (i) {
+      var items = list.querySelectorAll('li')
+      items.forEach(function (li, n) {
+        var on = n === i
+        li.setAttribute('aria-selected', on ? 'true' : 'false')
+        li.style.background = on ? '#1d70b8' : '#ffffff'
+        li.style.color = on ? '#ffffff' : '#0b0c0c'
+      })
+      active = i
+      if (items[i]) input.setAttribute('aria-activedescendant', items[i].id)
+    }
+
+    input.addEventListener('input', function () {
+      var q = input.value.trim().toLowerCase()
+      if (q.length < 3) return close()
+      var matches = academies.filter(function (t) { return t.name.toLowerCase().indexOf(q) !== -1 })
+      list.innerHTML = ''
+      if (!matches.length) {
+        list.innerHTML = '<li class="govuk-body" style="margin: 0; padding: 10px; color: #505a5f;">No results found</li>'
+      }
+      matches.forEach(function (t, i) {
+        var li = document.createElement('li')
+        li.id = 'academy-name-option-' + i
+        li.setAttribute('role', 'option')
+        li.className = 'govuk-body'
+        li.style.cssText = 'margin: 0; padding: 10px; cursor: pointer; border-bottom: 1px solid #b1b4b6;'
+        li.textContent = t.name
+        li.addEventListener('mousedown', function (e) { e.preventDefault(); choose(t.name) })
+        list.appendChild(li)
+      })
+      list.hidden = false
+      input.setAttribute('aria-expanded', 'true')
+    })
+
+    input.addEventListener('keydown', function (e) {
+      var items = list.querySelectorAll('li[role="option"]')
+      if (list.hidden || !items.length) return
+      if (e.key === 'ArrowDown') { e.preventDefault(); highlight(Math.min(active + 1, items.length - 1)) }
+      if (e.key === 'ArrowUp') { e.preventDefault(); highlight(Math.max(active - 1, 0)) }
+      if (e.key === 'Enter' && active > -1) { e.preventDefault(); choose(items[active].textContent) }
+      if (e.key === 'Escape') close()
+    })
+
+    input.addEventListener('blur', close)
+  })()
+</script>
+{% endblock %}

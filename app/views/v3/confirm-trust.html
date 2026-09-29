@@ -1,0 +1,73 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {{ "Error: " if errors }}Is this the right trust? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/v3/trust-name"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v3/confirm-trust-submit" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Select yes if this is the right trust",
+                href: "#confirm-trust"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">Trust</span>
+        <h1 class="govuk-heading-l">Is this the right trust?</h1>
+
+        {% set trustHtml %}
+          <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ data['trustName'] }}</p>
+          <p class="govuk-body govuk-!-margin-bottom-0"><strong>Companies House number:</strong> {{ data['companiesHouseNumber'] }}</p>
+        {% endset %}
+
+        {{ govukInsetText({
+          html: trustHtml
+        }) }}
+
+        {{ govukRadios({
+          idPrefix: "confirm-trust",
+          name: "confirmTrust",
+          classes: "govuk-radios--inline",
+          fieldset: {
+            legend: {
+              text: "Is this the right trust?",
+              classes: "govuk-visually-hidden"
+            }
+          },
+          errorMessage: {
+            text: "Select yes if this is the right trust"
+          } if errors,
+          items: [
+            { value: "yes", text: "Yes" },
+            { value: "no", text: "No" }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return"
+        }) }}
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-  What do you plan to do? – Tier 1 significant change application – GOV.UK
+  Will this change have an impact on SEN provision? – Tier 1 significant change application – GOV.UK
 {% endblock %}
 
 {% block containerStart %}
@@ -16,15 +16,15 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form class="form" action="/v3/what-do-you-plan-to-do-submit" method="post">
+      <form class="form" action="/v3/sen-impact-next" method="post">
 
         {% if errors %}
           {{ govukErrorSummary({
             titleText: "There is a problem",
             errorList: [
               {
-                text: "Select what you plan to do",
-                href: "#what-do-you-plan-to-do"
+                text: "Select yes or no",
+                href: "#sen-impact"
               }
             ]
           }) }}
@@ -32,23 +32,25 @@
 
         <span class="govuk-caption-l">Details of the significant change</span>
         {{ govukRadios({
-          idPrefix: "what-do-you-plan-to-do",
-          name: "whatDoYouPlanToDo",
+          idPrefix: "sen-impact",
+          name: "senImpact",
           fieldset: {
             legend: {
-              text: "What do you plan to do?",
+              text: "Will this change have an impact on SEN provision?",
               isPageHeading: true,
               classes: "govuk-fieldset__legend--l"
             }
           },
           errorMessage: {
-            text: "Select what you plan to do"
+            text: "Select yes or no"
           } if errors,
           items: [
-            { value: "add", text: "Add a new boarding provision" },
-            { value: "remove", text: "Completely remove a boarding provision" }
+            { value: "yes", text: "Yes" },
+            { value: "no", text: "No" }
           ]
         }) }}
+
+
 
         {{ govukButton({
           text: "Save and continue"

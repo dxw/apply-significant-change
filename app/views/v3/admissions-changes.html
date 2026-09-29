@@ -1,0 +1,45 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {{ "Error: " if errors }}About the proposed admissions changes – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v3/admissions-changes-submit" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: "Enter details of the proposed admissions changes", href: "#admissions-changes" }]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">Admissions variation details</span>
+        {{ govukCharacterCount({
+          id: "admissions-changes",
+          name: "admissionsChanges",
+          maxlength: 2000,
+          label: { text: "About the proposed admissions changes", isPageHeading: true, classes: "govuk-label--l" },
+          hint: { text: "Explain what the proposed changes are and when they will take effect" },
+          errorMessage: { text: "Enter details of the proposed admissions changes" } if errors
+        }) }}
+
+        {{ govukButton({ text: "Save and continue" }) }}
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

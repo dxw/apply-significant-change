@@ -1,0 +1,51 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {{ "Error: " if errors }}Check your answers – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <span class="govuk-caption-l">Details of the significant change</span>
+      <h1 class="govuk-heading-l">Check your answers</h1>
+
+      {% set changeLabels = { "boarding": "Add or remove a boarding provision", "satellite": "Add or remove a satellite site or move the academy to another site", "sen-unit": "Add or remove a SEN unit or resourced provision", "age-range": "Change age range", "gender": "Change from single sex to co-educational or co-educational to single sex", "sen-type": "Change the type of SEN provision in a mainstream, special or AP academy", "pupil-places": "Increase or decrease existing mainstream or SEN pupil places" } %}
+      {% set planLabels = { "add": "Add a new boarding provision", "remove": "Completely remove a boarding provision" } %}
+      {% set rows = [
+          { key: { text: "Change type" }, value: { text: changeLabels[data['whichChange']] or data['whichChange'] }, actions: { items: [{ href: "/v3/which-change", text: "Change", visuallyHiddenText: "change type" }] } }
+        ] %}
+        {% if data['whichChange'] == 'boarding' %}{% set rows = (rows.push({ key: { text: "What do you plan to do?" }, value: { text: planLabels[data['whatDoYouPlanToDo']] or data['whatDoYouPlanToDo'] }, actions: { items: [{ href: "/v3/what-do-you-plan-to-do", text: "Change", visuallyHiddenText: "what you plan to do" }] } }), rows) %}{% endif %}
+        {% set rows = (rows.push({ key: { text: "Why is the change being made?" }, value: { text: data['reason'] }, actions: { items: [{ href: "/v3/about-significant-change", text: "Change", visuallyHiddenText: "why is the change being made?" }] } }), rows) %}
+        {% set rows = (rows.push({ key: { text: "Who will the change affect?" }, value: { text: data['whoAffected'] }, actions: { items: [{ href: "/v3/about-significant-change", text: "Change", visuallyHiddenText: "who will the change affect?" }] } }), rows) %}
+        {% set rows = (rows.push({ key: { text: "What will be improved by making the change?" }, value: { text: data['whatImproved'] }, actions: { items: [{ href: "/v3/about-significant-change", text: "Change", visuallyHiddenText: "what will be improved by making the change?" }] } }), rows) %}
+        {% if data['whatDoYouPlanToDo'] == 'add' %}
+          {% set rows = (rows.push({ key: { text: "Explain how the trust has the appropriate experience and governance arrangements in place to support this change" }, value: { text: data['boardingGovernance'] }, actions: { items: [{ href: "/v3/boarding-further-details", text: "Change", visuallyHiddenText: "explain how the trust has the appropriate experience and governance arrangements in place to support this change" }] } }), rows) %}
+          {% set rows = (rows.push({ key: { text: "Provide details of any leadership or governance changes proposed to facilitate this change" }, value: { text: data['boardingLeadership'] }, actions: { items: [{ href: "/v3/boarding-further-details", text: "Change", visuallyHiddenText: "provide details of any leadership or governance changes proposed to facilitate this change" }] } }), rows) %}
+        {% endif %}
+        {% set rows = (rows.push({ key: { text: "Will the change affect SEN provision?" }, value: { text: data['senImpact'] | capitalize }, actions: { items: [{ href: "/v3/sen-impact", text: "Change", visuallyHiddenText: "sen impact" }] } }), rows) %}
+        {% if data['senImpact'] == 'yes' %}
+          {% set rows = (rows.push({ key: { text: "Explain how the change will impact access to education and support for children and young people with SEN" }, value: { text: data['senAccess'] }, actions: { items: [{ href: "/v3/sen-further-details", text: "Change", visuallyHiddenText: "explain how the change will impact access to education and support for children and young people with sen" }] } }), rows) %}
+          {% set rows = (rows.push({ key: { text: "Explain how the change will impact access to specialist staff and support" }, value: { text: data['senStaff'] }, actions: { items: [{ href: "/v3/sen-further-details", text: "Change", visuallyHiddenText: "explain how the change will impact access to specialist staff and support" }] } }), rows) %}
+          {% set rows = (rows.push({ key: { text: "Explain how the change will impact access to suitable accommodation" }, value: { text: data['senAccommodation'] }, actions: { items: [{ href: "/v3/sen-further-details", text: "Change", visuallyHiddenText: "explain how the change will impact access to suitable accommodation" }] } }), rows) %}
+        {% endif %}
+
+      {{ govukSummaryList({ rows: rows }) }}
+
+      <form class="form" action="/v3/significant-change-check-submit" method="post">
+        {{ govukButton({ text: "Save and return" }) }}
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Public Sector Equality Duty statement – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v3/equality-duty-next" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Select the statement that is correct",
+                href: "#equality-duty"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">Public Sector Equality Duty statement</span>
+        {{ govukRadios({
+          idPrefix: "equality-duty",
+          name: "equalityDuty",
+          fieldset: {
+            legend: {
+              text: "Public Sector Equality Duty statement",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          errorMessage: {
+            text: "Select the statement that is correct"
+          } if errors,
+          hint: {
+            text: "You must confirm that one of these statements is correct following your consideration of the equalities duty"
+          },
+          items: [
+            { value: "unlikely", text: "Unlikely to affect disproportionately any particular person or group who share protected characteristics" },
+            { value: "some-impact", text: "There are some impacts but on balance analysis indicates the changes will not affect disproportionately any particular person or group who share protected characteristics" },
+            { value: "likely", text: "Likely to affect disproportionately any particular person or group who share protected characteristics" }
+          ]
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

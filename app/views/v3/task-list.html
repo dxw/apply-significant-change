@@ -1,0 +1,32 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Apply to make a tier 1 significant change – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/v3/start"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-xl">Apply to make a tier 1 significant change</h1>
+
+      {% for section in sections %}
+        <h2 class="govuk-heading-m">{{ section.title }}</h2>
+        {{ govukTaskList({
+          idPrefix: section.id,
+          items: section.items
+        }) }}
+      {% endfor %}
+
+    </div>
+  </div>
+
+{% endblock %}
