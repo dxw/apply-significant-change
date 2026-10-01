@@ -16,7 +16,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form class="form" action="/v3/what-do-you-plan-to-do-submit" method="post">
+      <form class="form" action="/v3/plan-pupil-places-submit" method="post">
 
         {% if errors %}
           {{ govukErrorSummary({
@@ -24,7 +24,7 @@
             errorList: [
               {
                 text: "Select what you plan to do",
-                href: "#what-do-you-plan-to-do"
+                href: "#plan-pupil-places"
               }
             ]
           }) }}
@@ -32,8 +32,8 @@
 
         <span class="govuk-caption-l">Type of significant change</span>
         {{ govukRadios({
-          idPrefix: "what-do-you-plan-to-do",
-          name: "whatDoYouPlanToDo",
+          idPrefix: "plan-pupil-places",
+          name: "planPupilPlaces",
           fieldset: {
             legend: {
               text: "What do you plan to do?",
@@ -45,8 +45,12 @@
             text: "Select what you plan to do"
           } if errors,
           items: [
-            { value: "add", text: "Add a new boarding provision" },
-            { value: "remove", text: "Completely remove a boarding provision" }
+            { value: "add-mainstream", text: "Expand capacity by adding 31 or more mainstream pupil places" },
+            { value: "remove-mainstream", text: "Reduce capacity by removing 31 or more mainstream pupil places" },
+            { value: "add-ap-special", text: "Expand capacity by adding pupil places in an AP or special academy" },
+            { value: "remove-ap-special", text: "Reduce capacity by removing pupil places in an AP or special academy" },
+            { value: "add-sen", text: "Add pupil places to an existing SEN unit or resourced provision" },
+            { value: "remove-sen", text: "Remove pupil places from an existing SEN unit or resourced provision" }
           ]
         }) }}
 

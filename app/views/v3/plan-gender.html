@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-  Will this change have an impact on SEN provision? – Tier 1 significant change application – GOV.UK
+  What do you plan to do? – Tier 1 significant change application – GOV.UK
 {% endblock %}
 
 {% block containerStart %}
@@ -16,41 +16,39 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form class="form" action="/v3/sen-impact-next" method="post">
+      <form class="form" action="/v3/plan-gender-submit" method="post">
 
         {% if errors %}
           {{ govukErrorSummary({
             titleText: "There is a problem",
             errorList: [
               {
-                text: "Select yes or no",
-                href: "#sen-impact"
+                text: "Select what you plan to do",
+                href: "#plan-gender"
               }
             ]
           }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">SEN provision</span>
+        <span class="govuk-caption-l">Type of significant change</span>
         {{ govukRadios({
-          idPrefix: "sen-impact",
-          name: "senImpact",
+          idPrefix: "plan-gender",
+          name: "planGender",
           fieldset: {
             legend: {
-              text: "Will this change have an impact on SEN provision?",
+              text: "What do you plan to do?",
               isPageHeading: true,
               classes: "govuk-fieldset__legend--l"
             }
           },
           errorMessage: {
-            text: "Select yes or no"
+            text: "Select what you plan to do"
           } if errors,
           items: [
-            { value: "yes", text: "Yes" },
-            { value: "no", text: "No" }
+            { value: "to-co-ed", text: "Change from single sex to co-educational" },
+            { value: "to-single-sex", text: "Change from co-educational to single sex" }
           ]
         }) }}
-
-
 
         {{ govukButton({
           text: "Save and continue"
