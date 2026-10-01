@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-  Further details – boarding – Tier 1 significant change application – GOV.UK
+  Capacity – Tier 1 significant change application – GOV.UK
 {% endblock %}
 
 {% block containerStart %}
@@ -16,21 +16,21 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form class="form" action="/v3/boarding-further-details-submit" method="post">
+      <form class="form" action="/v3/capacity-submit" method="post">
 
         {{ govukCharacterCount({
-          id: "boarding-governance",
-          name: "boardingGovernance",
+          id: "capacity",
+          name: "capacity",
           maxlength: 2000,
           label: {
-            html: '<span class="govuk-caption-l">Governance and leadership</span>Governance and leadership',
+            html: '<span class="govuk-caption-l">Additional details</span>Capacity',
             isPageHeading: true,
             classes: "govuk-label--l"
           },
           hint: {
-            html: '<p class="govuk-hint">Include:</p><ul class="govuk-list govuk-list--bullet govuk-hint"><li>how the trust has the appropriate experience and governance arrangements in place to support this change</li><li>details of any leadership or governance changes proposed to facilitate this change</li></ul>'
+            html: '<p class="govuk-hint">Enter the academy’s current capacity and what the capacity will be after the change</p>'
           },
-          value: data['boardingGovernance']
+          value: data['capacity']
         }) }}
 
         {{ govukButton({

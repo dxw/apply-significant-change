@@ -1,0 +1,50 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Pupil equity considerations – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v3/pupil-equity-submit" method="post">
+
+        {{ govukCharacterCount({
+          id: "pupil-equity",
+          name: "pupilEquity",
+          maxlength: 2000,
+          label: {
+            html: '<span class="govuk-caption-l">Additional details</span>Pupil equity considerations',
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          hint: {
+            html: '<p class="govuk-hint">Include:</p><ul class="govuk-list govuk-list--bullet govuk-hint"><li>how the proposal ensures that there are sufficient school places available for each sex</li><li>how the proposal ensures that the range, type and quality of places available to each sex remain equitable</li></ul>'
+          },
+          value: data['pupilEquity']
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

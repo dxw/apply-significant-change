@@ -378,7 +378,7 @@ const v3Academies = [
 const V3_SECTIONS = [
   { id: 'check', title: 'Check before you start', items: [['consultation-status', 'Consultation status', 'has-change-been-made'], ['change-type', 'Type of significant change', 'which-change']] },
   { id: 'trust-academy', title: 'Trust and academy', items: [['trust', 'Trust details', 'trust-name'], ['academy', 'Academy details', 'academy-name'], ['contact', 'Contact details', 'your-role']] },
-  { id: 'change', title: 'Significant change', items: [['change-details', 'About the significant change', 'about-significant-change'], ['governance', 'Governance and leadership', 'boarding-further-details'], ['sen-impact', 'Impact on SEN provision', 'sen-impact'], ['effective-date', 'Effective date of the change', 'effective-date']] },
+  { id: 'change', title: 'Significant change', items: [['change-details', 'About the significant change', 'about-significant-change'], ['governance', 'Governance and leadership', 'boarding-further-details'], ['sen-impact', 'Impact on SEN provision', 'sen-impact'], ['additional-details', 'Additional details', 'additional-details-start'], ['sen-provision', 'SEN provision', 'sen-provision'], ['effective-date', 'Effective date of the change', 'effective-date']] },
   { id: 'consultation', title: 'Consultation', items: [['consultation-dates', 'Consultation dates', 'consultation-dates'], ['consultation-summary', 'Consultation summary', 'consultation-summary'], ['consultation-evidence', 'Consultation evidence', 'consultation-evidence']] },
   { id: 'funding', title: 'Funding', items: [['funding', 'Funding details', 'funding-required']] },
   { id: 'consent', title: 'Consent and permissions', items: [['la-objections', 'Local authority objections', 'local-authority-objections'], ['religious-consent', 'Consent from religious bodies', 'religious-consent-required'], ['planning', 'Planning permission and land transaction proposal', 'planning-required']] },
@@ -387,8 +387,24 @@ const V3_SECTIONS = [
   { id: 'psed', title: 'Public Sector Equality Duty Statement', items: [['psed', 'Public Sector Equality Duty Statement', 'equality-duty']] }
 ]
 
+function v3AgeRangePlans (data) {
+  const p = data['planAgeRange'] || []
+  return Array.isArray(p) ? p : [p]
+}
+
 function v3Hidden (id, data) {
-  if (id === 'governance') return !(data['whichChange'] === 'boarding' && data['whatDoYouPlanToDo'] === 'add')
+  const type = data['whichChange']
+  const plans = v3AgeRangePlans(data)
+  const mainstreamPlaces = ['add-mainstream', 'remove-mainstream'].includes(data['planPupilPlaces'])
+  if (id === 'governance') return !((type === 'boarding' && data['whatDoYouPlanToDo'] === 'add') || type === 'gender' || type === 'sen-type')
+  if (id === 'sen-impact') return ['age-range', 'gender', 'sen-type', 'pupil-places'].includes(type)
+  if (id === 'additional-details') {
+    if (type === 'age-range') return !(plans.includes('add-sixth-form') || plans.includes('remove-sixth-form'))
+    if (type === 'gender') return false
+    if (type === 'pupil-places') return !mainstreamPlaces
+    return true
+  }
+  if (id === 'sen-provision') return !(type === 'sen-type' || (type === 'pupil-places' && !mainstreamPlaces))
   return false
 }
 
@@ -406,7 +422,7 @@ router.get('/v3/task-list', function (req, res) {
     items: section.items.filter(([id]) => !v3Hidden(id, data)).map(([id, title, first]) => {
       const completed = data['v3-task-' + id] === 'completed'
       let locked = section.id !== 'check' && !consultationDone
-      if (['change-details', 'governance', 'sen-impact'].includes(id) && data['v3-task-change-type'] !== 'completed') locked = true
+      if (['change-details', 'governance', 'sen-impact', 'additional-details', 'sen-provision'].includes(id) && data['v3-task-change-type'] !== 'completed') locked = true
       if ((id === 'consultation-summary' || id === 'consultation-evidence') && data['consultationCompleted'] !== 'yes') locked = true
       let status
       if (completed) status = { text: 'Completed' }
@@ -534,6 +550,41 @@ Object.values(V3_PLAN_PAGES).forEach(function ([page, field]) {
 })
 
 // --- Details of the significant change ---
+// Additional details (change of age range – sixth form)
+router.get('/v3/additional-details-start', function (req, res) {
+  const type = req.session.data['whichChange']
+  if (type === 'gender') return res.redirect('/v3/pupil-equity')
+  if (type === 'pupil-places') return res.redirect('/v3/capacity')
+  const plans = v3AgeRangePlans(req.session.data)
+  res.redirect(plans.includes('add-sixth-form') ? '/v3/adding-sixth-form' : '/v3/removing-sixth-form')
+})
+
+router.post('/v3/adding-sixth-form-submit', function (req, res) {
+  res.redirect('/v3/sixth-form-pan')
+})
+
+router.post('/v3/sixth-form-pan-submit', function (req, res) {
+  if (!req.session.data['sixthFormPan']) return res.render('v3/sixth-form-pan', { errors: true })
+  if (v3AgeRangePlans(req.session.data).includes('remove-sixth-form')) return res.redirect('/v3/removing-sixth-form')
+  v3Done(req, res, 'additional-details')
+})
+
+router.post('/v3/pupil-equity-submit', function (req, res) {
+  v3Done(req, res, 'additional-details')
+})
+
+router.post('/v3/capacity-submit', function (req, res) {
+  v3Done(req, res, 'additional-details')
+})
+
+router.post('/v3/sen-provision-submit', function (req, res) {
+  v3Done(req, res, 'sen-provision')
+})
+
+router.post('/v3/removing-sixth-form-submit', function (req, res) {
+  v3Done(req, res, 'additional-details')
+})
+
 router.post('/v3/about-significant-change-submit', function (req, res) {
   if (!req.session.data['reason']) return res.render('v3/about-significant-change', { errors: true })
   v3Done(req, res, 'change-details')
@@ -754,8 +805,49 @@ function v3AllComplete (data) {
   }))
 }
 
+const V3_LABELS = {
+  whichChange: { 'boarding': 'Add or remove a boarding provision', 'satellite': 'Add or remove a satellite site or move the academy to another site', 'sen-unit': 'Add or remove a SEN unit or resourced provision', 'age-range': 'Change age range', 'gender': 'Change from single sex to co-educational or co-educational to single sex', 'sen-type': 'Change the type of SEN provision', 'pupil-places': 'Increase or decrease existing mainstream or SEN pupil places' },
+  plans: { 'add': 'Add', 'remove': 'Remove', 'transfer': 'Transfer the academy to another site', 'add-resourced': 'Add a new resourced provision', 'add-sen-unit': 'Add a new SEN unit', 'add-sixth-form': 'Add a sixth form', 'remove-sixth-form': 'Remove a sixth form', 'remove-nursery': 'Remove a nursery', 'all-through': 'Change of age range to create an all through school', 'to-co-ed': 'Change from single sex to co-educational', 'to-single-sex': 'Change from co-educational to single sex', 'add-mainstream': 'Expand capacity by adding 31 or more mainstream pupil places', 'remove-mainstream': 'Reduce capacity by removing 31 or more mainstream pupil places', 'add-ap-special': 'Expand capacity by adding pupil places in an AP or special academy', 'remove-ap-special': 'Reduce capacity by removing pupil places in an AP or special academy', 'add-sen': 'Add pupil places to an existing SEN unit or resourced provision', 'remove-sen': 'Remove pupil places from an existing SEN unit or resourced provision' }
+}
+
+function v3ChangeRows (data) {
+  const rows = []
+  const row = (key, value, href) => rows.push({ key: { text: key }, value: { text: value || 'Not answered' }, actions: { items: [{ href: href, text: 'Change', visuallyHiddenText: key.toLowerCase() }] } })
+  const yesNo = v => ({ yes: 'Yes', no: 'No' })[v] || v
+  const type = data['whichChange']
+  row('Type of significant change', V3_LABELS.whichChange[type], '/v3/which-change')
+  const planPage = V3_PLAN_PAGES[type]
+  if (planPage) {
+    let plan = data[planPage[1]]
+    plan = (Array.isArray(plan) ? plan : [plan]).filter(p => p && p !== '_unchecked').map(p => V3_LABELS.plans[p] || p).join(', ')
+    row('What do you plan to do?', plan, '/v3/' + planPage[0])
+  }
+  row('About the significant change', data['reason'], '/v3/about-significant-change')
+  if (!v3Hidden('governance', data)) row('Governance and leadership', data['boardingGovernance'], '/v3/boarding-further-details')
+  if (!v3Hidden('sen-impact', data)) {
+    row('Will this change have an impact on SEN provision?', yesNo(data['senImpact']), '/v3/sen-impact')
+    if (data['senImpact'] === 'yes') row('SEN provision', data['senAccess'], '/v3/sen-further-details')
+  }
+  if (!v3Hidden('additional-details', data)) {
+    const plans = v3AgeRangePlans(data)
+    if (type === 'age-range') {
+      if (plans.includes('add-sixth-form')) {
+        row('Adding a sixth form', data['addingSixthForm'], '/v3/adding-sixth-form')
+        row('Opening a new sixth form without an external PAN', yesNo(data['sixthFormPan']), '/v3/sixth-form-pan')
+      }
+      if (plans.includes('remove-sixth-form')) row('Removing a sixth form', data['removingSixthForm'], '/v3/removing-sixth-form')
+    }
+    if (type === 'gender') row('Pupil equity considerations', data['pupilEquity'], '/v3/pupil-equity')
+    if (type === 'pupil-places') row('Capacity', data['capacity'], '/v3/capacity')
+  }
+  if (!v3Hidden('sen-provision', data)) row('SEN provision', data['senProvision'], '/v3/sen-provision')
+  const d = [data['effective-date-day'], data['effective-date-month'], data['effective-date-year']]
+  row('Effective date of the change', d.every(Boolean) ? d.join('/') : '', '/v3/effective-date')
+  return rows
+}
+
 router.get('/v3/check-answers', function (req, res) {
-  res.render('v3/check-answers', { allComplete: v3AllComplete(req.session.data) })
+  res.render('v3/check-answers', { allComplete: v3AllComplete(req.session.data), changeRows: v3ChangeRows(req.session.data) })
 })
 
 router.post('/v3/confirmation', function (req, res) {

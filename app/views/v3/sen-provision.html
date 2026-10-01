@@ -1,0 +1,50 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  SEN provision – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v3/sen-provision-submit" method="post">
+
+        {{ govukCharacterCount({
+          id: "sen-provision",
+          name: "senProvision",
+          maxlength: 2000,
+          label: {
+            html: '<span class="govuk-caption-l">SEN provision</span>SEN provision',
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          hint: {
+            html: '<p class="govuk-hint">Include how the change will improve:</p><ul class="govuk-list govuk-list--bullet govuk-hint"><li>access to education and associated services including the curriculum, wider school activities, facilities and equipment</li><li>access to specialist staff, both education and other professionals, including any external support or outreach services</li><li>access to suitable accommodation</li><li>the supply of suitable places at the academy and/or at other schools in the local area</li></ul>'
+          },
+          value: data['senProvision']
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

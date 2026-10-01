@@ -72,24 +72,12 @@
         ]
       }) }}
 
-      <h2 class="govuk-heading-m">The significant change</h2>
+      <h2 class="govuk-heading-m">Significant change</h2>
+      {{ govukSummaryList({ rows: changeRows }) }}
+
+      <h2 class="govuk-heading-m">Consultation and other details</h2>
       {{ govukSummaryList({
         rows: [
-          {
-            key: { text: "Change type" },
-            value: { text: data['whichChange'] },
-            actions: { items: [{ href: "/v3/which-change", text: "Change", visuallyHiddenText: "change type" }] }
-          },
-          {
-            key: { text: "Reason for change" },
-            value: { text: data['reason'] },
-            actions: { items: [{ href: "/v3/about-significant-change", text: "Change", visuallyHiddenText: "reason for change" }] }
-          },
-          {
-            key: { text: "Effective date" },
-            value: { text: data['effective-date-day'] + "/" + data['effective-date-month'] + "/" + data['effective-date-year'] },
-            actions: { items: [{ href: "/v3/effective-date", text: "Change", visuallyHiddenText: "effective date" }] }
-          },
           {
             key: { text: "Consultation completed" },
             value: { text: data['consultationCompleted'] },

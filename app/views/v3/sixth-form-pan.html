@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-  Will this change have an impact on SEN provision? – Tier 1 significant change application – GOV.UK
+  Are you proposing to open a new sixth form without an external PAN? – Tier 1 significant change application – GOV.UK
 {% endblock %}
 
 {% block containerStart %}
@@ -16,7 +16,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form class="form" action="/v3/sen-impact-next" method="post">
+      <form class="form" action="/v3/sixth-form-pan-submit" method="post">
 
         {% if errors %}
           {{ govukErrorSummary({
@@ -24,23 +24,24 @@
             errorList: [
               {
                 text: "Select yes or no",
-                href: "#sen-impact"
+                href: "#sixth-form-pan"
               }
             ]
           }) }}
         {% endif %}
 
-        <span class="govuk-caption-l">SEN provision</span>
+        <span class="govuk-caption-l">Additional details</span>
         {{ govukRadios({
-          idPrefix: "sen-impact",
-          name: "senImpact",
+          idPrefix: "sixth-form-pan",
+          name: "sixthFormPan",
           fieldset: {
             legend: {
-              text: "Will this change have an impact on SEN provision?",
+              text: "Are you proposing to open a new sixth form without an external Published Admission Number (PAN)?",
               isPageHeading: true,
               classes: "govuk-fieldset__legend--l"
             }
           },
+          hint: { text: "This could be for a limited period or longer term" },
           errorMessage: {
             text: "Select yes or no"
           } if errors,
@@ -53,7 +54,7 @@
 
 
         {{ govukButton({
-          text: "Save and continue"
+          text: "Save and return"
         }) }}
 
       </form>

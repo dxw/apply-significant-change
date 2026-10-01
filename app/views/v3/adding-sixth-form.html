@@ -1,0 +1,50 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Adding a sixth form – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v3/adding-sixth-form-submit" method="post">
+
+        {{ govukCharacterCount({
+          id: "adding-sixth-form",
+          name: "addingSixthForm",
+          maxlength: 2000,
+          label: {
+            html: '<span class="govuk-caption-l">Additional details</span>Adding a sixth form',
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          hint: {
+            html: '<p class="govuk-hint">Include how:</p><ul class="govuk-list govuk-list--bullet govuk-hint"><li>the proposed sixth form will provide places for a minimum of 200 students</li><li>the proposed sixth form will either directly or through partnership, offer a minimum of 15 A level (or equivalent) subjects</li><li>the proposed sixth form will have an average class size of at least 15, unless there is a clear educational argument to run smaller classes</li></ul>'
+          },
+          value: data['addingSixthForm']
+        }) }}
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

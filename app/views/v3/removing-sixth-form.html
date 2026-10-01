@@ -1,7 +1,7 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-  Further details – SEN provision – Tier 1 significant change application – GOV.UK
+  Removing a sixth form – Tier 1 significant change application – GOV.UK
 {% endblock %}
 
 {% block containerStart %}
@@ -16,21 +16,21 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form class="form" action="/v3/sen-further-details-submit" method="post">
+      <form class="form" action="/v3/removing-sixth-form-submit" method="post">
 
         {{ govukCharacterCount({
-          id: "sen-access",
-          name: "senAccess",
+          id: "removing-sixth-form",
+          name: "removingSixthForm",
           maxlength: 2000,
           label: {
-            html: '<span class="govuk-caption-l">SEN provision</span>SEN provision',
+            html: '<span class="govuk-caption-l">Additional details</span>Removing a sixth form',
             isPageHeading: true,
             classes: "govuk-label--l"
           },
           hint: {
-            html: '<p class="govuk-hint">Include how the change will improve:</p><ul class="govuk-list govuk-list--bullet govuk-hint"><li>access to education and associated services including the curriculum, wider school activities, facilities and equipment</li><li>access to specialist staff, both education and other professionals, including any external support or outreach services</li></ul>'
+            html: '<p class="govuk-hint">Describe your plans for closing the sixth form including:</p><ul class="govuk-list govuk-list--bullet govuk-hint"><li>any phased closure arrangements</li><li>how affected and prospective students will be supported to access alternative post-16 provision</li><li>how you will engage and communicate with key stakeholders throughout the process</li></ul>'
           },
-          value: data['senAccess']
+          value: data['removingSixthForm']
         }) }}
 
         {{ govukButton({
