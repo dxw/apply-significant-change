@@ -382,8 +382,7 @@ const V3_SECTIONS = [
   { id: 'consultation', title: 'Consultation', items: [['consultation-dates', 'Consultation dates', 'consultation-dates'], ['consultation-summary', 'Consultation summary', 'consultation-summary'], ['consultation-evidence', 'Consultation evidence', 'consultation-evidence']] },
   { id: 'funding', title: 'Funding', items: [['funding', 'Funding details', 'funding-required']] },
   { id: 'consent', title: 'Consent and permissions', items: [['la-objections', 'Local authority objections', 'local-authority-objections'], ['religious-consent', 'Consent from religious bodies', 'religious-consent-required']] },
-  { id: 'planning', title: 'Planning permission', items: [['planning', 'Planning permission', 'planning-required']] },
-  { id: 'land', title: 'Land transaction', items: [['land-transaction', 'Land transaction proposal', 'land-transaction']] },
+  { id: 'planning', title: 'Land and planning permission', items: [['planning', 'Planning permission', 'planning-required'], ['land-transaction', 'Land transaction proposal', 'land-transaction']] },
   { id: 'admissions', title: 'Admissions variation', items: [['admissions', 'Admissions variation details', 'admissions-variation']] },
   { id: 'ofsted', title: 'Ofsted and performance', items: [['intervention', 'Intervention measures', 'intervention-eligible']] },
   { id: 'psed', title: 'Public Sector Equality Duty Statement', items: [['psed', 'Public Sector Equality Duty Statement', 'equality-duty']] }
