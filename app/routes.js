@@ -381,9 +381,11 @@ const V3_SECTIONS = [
   { id: 'change', title: 'Significant change', items: [['change-details', 'About the significant change', 'about-significant-change'], ['governance', 'Governance and leadership', 'boarding-further-details'], ['sen-impact', 'Impact on SEN provision', 'sen-impact'], ['additional-details', 'Additional details', 'additional-details-start'], ['sen-provision', 'SEN provision', 'sen-provision'], ['effective-date', 'Effective date of the change', 'effective-date']] },
   { id: 'consultation', title: 'Consultation', items: [['consultation-dates', 'Consultation dates', 'consultation-dates'], ['consultation-summary', 'Consultation summary', 'consultation-summary'], ['consultation-evidence', 'Consultation evidence', 'consultation-evidence']] },
   { id: 'funding', title: 'Funding', items: [['funding', 'Funding details', 'funding-required']] },
-  { id: 'consent', title: 'Consent and permissions', items: [['la-objections', 'Local authority objections', 'local-authority-objections'], ['religious-consent', 'Consent from religious bodies', 'religious-consent-required'], ['planning', 'Planning permission and land transaction proposal', 'planning-required']] },
+  { id: 'consent', title: 'Consent and permissions', items: [['la-objections', 'Local authority objections', 'local-authority-objections'], ['religious-consent', 'Consent from religious bodies', 'religious-consent-required']] },
+  { id: 'planning', title: 'Planning permission', items: [['planning', 'Planning permission', 'planning-required']] },
+  { id: 'land', title: 'Land transaction', items: [['land-transaction', 'Land transaction proposal', 'land-transaction']] },
   { id: 'admissions', title: 'Admissions variation', items: [['admissions', 'Admissions variation details', 'admissions-variation']] },
-  { id: 'ofsted', title: 'Ofsted and performance', items: [['ofsted', 'Ofsted details', 'ofsted-inspection'], ['intervention', 'Intervention measures', 'intervention-eligible']] },
+  { id: 'ofsted', title: 'Ofsted and performance', items: [['intervention', 'Intervention measures', 'intervention-eligible']] },
   { id: 'psed', title: 'Public Sector Equality Duty Statement', items: [['psed', 'Public Sector Equality Duty Statement', 'equality-duty']] }
 ]
 
@@ -427,7 +429,7 @@ router.get('/v3/task-list', function (req, res) {
       let status
       if (completed) status = { text: 'Completed' }
       else if (locked) status = { text: 'Cannot start yet', classes: 'govuk-task-list__status--cannot-start-yet' }
-      else status = { tag: { text: 'Incomplete', classes: 'govuk-tag--blue' } }
+      else status = { tag: { text: 'Not yet started', classes: 'govuk-tag--blue' } }
       return { title: { text: title }, href: locked ? undefined : '/v3/' + first, status, locked, completed }
     })
   }))
@@ -437,7 +439,7 @@ router.get('/v3/task-list', function (req, res) {
     items: [{
       title: { text: 'Check answers and submit' },
       href: '/v3/check-answers',
-      status: { tag: { text: 'Incomplete', classes: 'govuk-tag--blue' } }
+      status: { tag: { text: 'Not yet started', classes: 'govuk-tag--blue' } }
     }]
   })
   res.render('v3/task-list', { sections })
@@ -686,7 +688,7 @@ router.post('/v3/religious-consent-explain-submit', function (req, res) {
   v3Done(req, res, 'religious-consent')
 })
 
-// --- Planning permission and land transaction ---
+// --- Planning permission ---
 router.post('/v3/planning-required-next', function (req, res) {
   const answer = req.session.data['planningRequired']
   if (!answer) return res.render('v3/planning-required', { errors: true })
@@ -697,24 +699,26 @@ router.post('/v3/planning-required-next', function (req, res) {
 router.post('/v3/planning-obtained-next', function (req, res) {
   const answer = req.session.data['planningObtained']
   if (!answer) return res.render('v3/planning-obtained', { errors: true })
-  res.redirect(answer === 'no' ? '/v3/planning-explain' : '/v3/land-transaction')
+  if (answer === 'no') return res.redirect('/v3/planning-explain')
+  v3Done(req, res, 'planning')
 })
 
 router.post('/v3/planning-explain-submit', function (req, res) {
   if (!req.session.data['planningExplain']) return res.render('v3/planning-explain', { errors: true })
-  res.redirect('/v3/land-transaction')
+  v3Done(req, res, 'planning')
 })
 
+// --- Land transaction ---
 router.post('/v3/land-transaction-next', function (req, res) {
   const answer = req.session.data['landTransaction']
   if (!answer) return res.render('v3/land-transaction', { errors: true })
   if (answer === 'no') return res.redirect('/v3/land-transaction-explain')
-  v3Done(req, res, 'planning')
+  v3Done(req, res, 'land-transaction')
 })
 
 router.post('/v3/land-transaction-explain-submit', function (req, res) {
   if (!req.session.data['landTransactionExplain']) return res.render('v3/land-transaction-explain', { errors: true })
-  v3Done(req, res, 'planning')
+  v3Done(req, res, 'land-transaction')
 })
 
 // --- Admissions variation ---
