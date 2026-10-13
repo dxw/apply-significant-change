@@ -29,7 +29,7 @@
         {% set cond_planAgeRangeOther %}
           {{ govukTextarea({ id: "planAgeRangeOther", name: "planAgeRangeOther", label: { text: "Give more details" }, value: data["planAgeRangeOther"] }) }}
         {% endset %}
-        {{ govukCheckboxes({
+        {{ govukRadios({
           idPrefix: "planAgeRange",
           name: "planAgeRange",
           fieldset: {
@@ -39,17 +39,16 @@
               classes: "govuk-fieldset__legend--l"
             }
           },
-          hint: { text: "Select all that apply" },
           errorMessage: { text: "Select what you plan to do" } if errors,
           items: [
-            { value: "add-sixth-form", text: "Add a sixth form", checked: ("add-sixth-form" in (data["planAgeRange"] or [])) },
-            { value: "remove-sixth-form", text: "Remove a sixth form", checked: ("remove-sixth-form" in (data["planAgeRange"] or [])) },
-            { value: "remove-nursery", text: "Remove a nursery", checked: ("remove-nursery" in (data["planAgeRange"] or [])) },
-            { value: "decrease-nursery", text: "Decrease the age range of a nursery", checked: ("decrease-nursery" in (data["planAgeRange"] or [])) },
-            { value: "all-through", text: "Become an all-through school", checked: ("all-through" in (data["planAgeRange"] or [])) },
-            { value: "primary", text: "Become a primary school", checked: ("primary" in (data["planAgeRange"] or [])) },
-            { value: "infant-junior", text: "Become an infant or junior school", checked: ("infant-junior" in (data["planAgeRange"] or [])) },
-            { value: "other", text: "Other", checked: ("other" in (data["planAgeRange"] or [])), conditional: { html: cond_planAgeRangeOther } }
+            { value: "add-sixth-form", text: "Add a sixth form", checked: (data["planAgeRange"] == "add-sixth-form") },
+            { value: "remove-sixth-form", text: "Remove a sixth form", checked: (data["planAgeRange"] == "remove-sixth-form") },
+            { value: "remove-nursery", text: "Remove a nursery", checked: (data["planAgeRange"] == "remove-nursery") },
+            { value: "decrease-nursery", text: "Decrease the age range of a nursery", checked: (data["planAgeRange"] == "decrease-nursery") },
+            { value: "all-through", text: "Become an all-through school", checked: (data["planAgeRange"] == "all-through") },
+            { value: "primary", text: "Become a primary school", checked: (data["planAgeRange"] == "primary") },
+            { value: "infant-junior", text: "Become an infant or junior school", checked: (data["planAgeRange"] == "infant-junior") },
+            { value: "other", text: "Other", checked: (data["planAgeRange"] == "other"), conditional: { html: cond_planAgeRangeOther } }
           ]
         }) }}
 
@@ -59,10 +58,6 @@
 
       </form>
 
-      {{ govukDetails({
-        summaryText: "Get help with this form",
-        text: "Contact the academies helpdesk if you need help completing this form."
-      }) }}
 
     </div>
   </div>

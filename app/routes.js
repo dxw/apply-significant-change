@@ -956,7 +956,9 @@ router.post('/v4/contacted-do-next-page', function (req, res) {
 router.post('/v4/consultation-completed-next-page', function (req, res) {
   const answer = req.session.data['consultationCompleted']
   if (!answer) return res.render('v4/consultation-completed', { errors: true })
-  if (answer === 'no') return res.redirect('/v4/consultation-not-started')
+  // If the change has already been made and they've told their DO, they can carry on without a consultation
+  const toldDo = req.session.data['hasChangeBeenMade'] === 'yes' && req.session.data['contactedDo'] === 'yes'
+  if (answer === 'no' && !toldDo) return res.redirect('/v4/consultation-not-started')
   v4Done(req, res, 'consultation-status')
 })
 
@@ -1052,9 +1054,9 @@ function v4ChangePages (data) {
   }
 
   if (type === 'boarding') {
-    // Figma route 1. Adding: governance then SEN provision. Removing: straight to SEN provision.
+    // Figma route 1. Adding: governance first. Then the SEN impact question, and SEN provision if there is an impact.
     if (data['planBoarding'] === 'add') pages.push('governance')
-    pages.push('sen-provision')
+    senProvisionIfImpact()
   }
 
   if (type === 'satellite') {
