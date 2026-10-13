@@ -1,0 +1,48 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Before you apply – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/v4/start"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">Before you apply</h1>
+
+      <h2 class="govuk-heading-m">If you have not started a consultation</h2>
+      <p class="govuk-body">Before you apply to make a significant change you should have completed a 3 week consultation or have one in progress. Guidance on <a class="govuk-link" href="#">how to run a consultation</a> is available.</p>
+
+      {{ govukInsetText({
+        text: "If you have not started or completed a consultation, you should not apply."
+      }) }}
+
+      <h2 class="govuk-heading-m">If you have already made the significant change</h2>
+      <p class="govuk-body">A significant change should not be made before an application has been approved.</p>
+
+      {{ govukInsetText({
+        text: "If you have already made the significant change you should speak to your local DfE delivery officer before you apply."
+      }) }}
+
+      <p class="govuk-body">They will advise you on what to do next.</p>
+
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: "Continue",
+          href: "/v4/dfe-sign-in"
+        }) }}
+        <a class="govuk-link" href="/v4/start">Close this page</a>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

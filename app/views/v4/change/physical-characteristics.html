@@ -1,0 +1,104 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Physical characteristics of the school – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/physical-characteristics" method="post" novalidate>
+
+
+        <span class="govuk-caption-l">About the significant change</span>
+        <h1 class="govuk-heading-l">Physical characteristics of the school</h1>
+
+        {{ govukCharacterCount({
+          id: "facilitiesUse",
+          name: "facilitiesUse",
+          maxlength: 2000,
+          label: {
+            text: "How will facilities across the two sites be used?",
+            classes: "govuk-label--m"
+          },
+          value: data["facilitiesUse"]
+        }) }}
+
+        {% set cond_siteAccessibleDetails %}
+          {{ govukTextarea({ id: "siteAccessibleDetails", name: "siteAccessibleDetails", label: { text: "Give more details" }, value: data["siteAccessibleDetails"] }) }}
+        {% endset %}
+        {{ govukRadios({
+          idPrefix: "siteAccessible",
+          name: "siteAccessible",
+          fieldset: {
+            legend: {
+              text: "Is the new site in an area that’s easily accessible to the community that the current school serves?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            { value: "yes", text: "Yes", checked: (data["siteAccessible"] == "yes"), conditional: { html: cond_siteAccessibleDetails } },
+            { value: "no", text: "No", checked: (data["siteAccessible"] == "no") }
+          ]
+        }) }}
+
+        {% set cond_siteBigEnoughDetails %}
+          {{ govukTextarea({ id: "siteBigEnoughDetails", name: "siteBigEnoughDetails", label: { text: "Give more details" }, value: data["siteBigEnoughDetails"] }) }}
+        {% endset %}
+        {{ govukRadios({
+          idPrefix: "siteBigEnough",
+          name: "siteBigEnough",
+          fieldset: {
+            legend: {
+              text: "Is the new site big enough to accommodate the intended number of pupils?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            { value: "yes", text: "Yes", checked: (data["siteBigEnough"] == "yes") },
+            { value: "no", text: "No", checked: (data["siteBigEnough"] == "no"), conditional: { html: cond_siteBigEnoughDetails } }
+          ]
+        }) }}
+
+        {% set cond_siteSuitableDetails %}
+          {{ govukTextarea({ id: "siteSuitableDetails", name: "siteSuitableDetails", label: { text: "Give more details" }, value: data["siteSuitableDetails"] }) }}
+        {% endset %}
+        {{ govukRadios({
+          idPrefix: "siteSuitable",
+          name: "siteSuitable",
+          fieldset: {
+            legend: {
+              text: "Is the new site suitable for the proposed curriculum?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            { value: "yes", text: "Yes", checked: (data["siteSuitable"] == "yes") },
+            { value: "no", text: "No", checked: (data["siteSuitable"] == "no"), conditional: { html: cond_siteSuitableDetails } }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

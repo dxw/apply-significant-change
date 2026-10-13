@@ -1,0 +1,65 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Which change do you want to make? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/which-change" method="post" novalidate>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: "Select the change you want to make", href: "#whichChange" }]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">About the significant change</span>
+        {{ govukRadios({
+          idPrefix: "whichChange",
+          name: "whichChange",
+          fieldset: {
+            legend: {
+              text: "Which change do you want to make?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          errorMessage: { text: "Select the change you want to make" } if errors,
+          items: [
+            { value: "boarding", text: "Add or remove a boarding or residential provision", checked: (data["whichChange"] == "boarding") },
+            { value: "satellite", text: "Add or remove a satellite site or move the academy to another site", checked: (data["whichChange"] == "satellite") },
+            { value: "specialist-base", text: "Add or remove a specialist base", checked: (data["whichChange"] == "specialist-base"), hint: { text: "In a mainstream or AP academy" } },
+            { value: "age-range", text: "Change age range", checked: (data["whichChange"] == "age-range"), hint: { text: "Includes adding or removing a sixth form and removing a nursery" } },
+            { value: "gender", text: "Change from single sex to co-educational or co-educational to single sex", checked: (data["whichChange"] == "gender") },
+            { value: "sen-type", text: "Change the type of SEN provision in a mainstream, special or AP academy", checked: (data["whichChange"] == "sen-type") },
+            { value: "pupil-places", text: "Increase or decrease existing mainstream or SEN pupil places", checked: (data["whichChange"] == "pupil-places"), hint: { text: "In a mainstream, special or AP academy" } }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

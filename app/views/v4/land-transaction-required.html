@@ -1,0 +1,61 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Is a land transaction proposal required? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/land-transaction-required-next" method="post" novalidate>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: "Select yes or no", href: "#land-transaction-required" }]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">Land transaction proposal</span>
+        {{ govukRadios({
+          idPrefix: "land-transaction-required",
+          name: "landTransactionRequired",
+          fieldset: {
+            legend: {
+              text: "Is a land transaction proposal required?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          hint: { text: "This might be needed if the academy is being moved or a satellite site is being added or removed" },
+          errorMessage: { text: "Select yes or no" } if errors,
+          items: [
+            { value: "yes", text: "Yes", checked: data['landTransactionRequired'] == "yes" },
+            { value: "no", text: "No", checked: data['landTransactionRequired'] == "no" }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Adding a sixth form – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/adding-sixth-form" method="post" novalidate>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: "Enter details about adding a sixth form", href: "#addingSixthForm" }]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">About the significant change</span>
+        {{ govukCharacterCount({
+          id: "addingSixthForm",
+          name: "addingSixthForm",
+          maxlength: 2000,
+          label: {
+            text: "Adding a sixth form",
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          hint: { html: "<p class=\"govuk-hint\">Include how the proposed sixth form will:</p><ul class=\"govuk-list govuk-list--bullet govuk-hint\"><li>provide places for a minimum of 200 students</li><li>either directly or through partnership, offer a minimum of 15 A level (or equivalent) subjects</li><li>have an average class size of at least 15, unless there is a clear educational argument to run smaller classes</li></ul>" },
+          errorMessage: { text: "Enter details about adding a sixth form" } if errors,
+          value: data["addingSixthForm"]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

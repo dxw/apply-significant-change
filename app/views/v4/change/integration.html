@@ -1,0 +1,57 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Integration with the school community – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/integration" method="post" novalidate>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: "Enter details about integration with the school community", href: "#integration" }]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">About the significant change</span>
+        {{ govukCharacterCount({
+          id: "integration",
+          name: "integration",
+          maxlength: 2000,
+          label: {
+            text: "Integration with the school community",
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          hint: { html: "<p class=\"govuk-hint\">Describe how pupils will be integrated into the wider life of the school.</p><p class=\"govuk-hint\">Include participation in lessons, enrichment activities, social opportunities and other aspects of school life.</p>" },
+          errorMessage: { text: "Enter details about integration with the school community" } if errors,
+          value: data["integration"]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

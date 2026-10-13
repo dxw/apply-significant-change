@@ -1,0 +1,65 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Explain why planning permission has not been obtained – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/planning-explain-submit" method="post">
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Enter why planning permission has not been obtained",
+                href: "#planning-explain"
+              }
+            ]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">Planning permission</span>
+        {{ govukCharacterCount({
+          id: "planning-explain",
+          name: "planningExplain",
+          maxlength: 2000,
+          label: {
+            text: "Why has planning permission not been obtained?",
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          hint: { text: "If planning permission is pending, give details on the status of the application" },
+          errorMessage: {
+            text: "Enter why planning permission has not been obtained"
+          } if errors
+        }) }}
+
+
+
+        {{ govukButton({
+          text: "Save and return"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

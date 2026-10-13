@@ -1,0 +1,57 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Removing a sixth form – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/removing-sixth-form" method="post" novalidate>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: "Enter details about removing the sixth form", href: "#removingSixthForm" }]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">About the significant change</span>
+        {{ govukCharacterCount({
+          id: "removingSixthForm",
+          name: "removingSixthForm",
+          maxlength: 2000,
+          label: {
+            text: "Removing a sixth form",
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          hint: { html: "<p class=\"govuk-hint\">Describe your plans for closing the sixth form, including:</p><ul class=\"govuk-list govuk-list--bullet govuk-hint\"><li>any phased closure arrangements</li><li>how affected and prospective students will be supported to access alternative post-16 provision</li><li>how you will engage and communicate with key stakeholders throughout the process</li></ul>" },
+          errorMessage: { text: "Enter details about removing the sixth form" } if errors,
+          value: data["removingSixthForm"]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

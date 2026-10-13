@@ -1,0 +1,50 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Large specialist base – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/large-specialist-base" method="post" novalidate>
+
+
+        <span class="govuk-caption-l">About the significant change</span>
+        {{ govukCharacterCount({
+          id: "largeSpecialistBase",
+          name: "largeSpecialistBase",
+          maxlength: 2000,
+          label: {
+            text: "Large specialist base (optional)",
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          hint: { html: "<p class=\"govuk-hint\">If the proposed specialist base will accommodate 50 or more pupils, explain why this model is appropriate.</p><p class=\"govuk-hint\">Explain how it will operate as an integrated provision within the school, rather than functioning as a separate special school.</p>" },
+          value: data["largeSpecialistBase"]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

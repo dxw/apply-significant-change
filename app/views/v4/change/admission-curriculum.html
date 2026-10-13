@@ -1,0 +1,86 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Admission and curriculum arrangements – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/admission-curriculum" method="post" novalidate>
+
+
+        <span class="govuk-caption-l">About the significant change</span>
+        <h1 class="govuk-heading-l">Admission and curriculum arrangements</h1>
+
+        {{ govukCharacterCount({
+          id: "siteUse",
+          name: "siteUse",
+          maxlength: 2000,
+          label: {
+            text: "How will the new site be used?",
+            classes: "govuk-label--m"
+          },
+          value: data["siteUse"]
+        }) }}
+
+        {% set cond_admissionChangesNeededDetails %}
+          {{ govukTextarea({ id: "admissionChangesNeededDetails", name: "admissionChangesNeededDetails", label: { text: "Give more details" }, value: data["admissionChangesNeededDetails"] }) }}
+        {% endset %}
+        {{ govukRadios({
+          idPrefix: "admissionChangesNeeded",
+          name: "admissionChangesNeeded",
+          fieldset: {
+            legend: {
+              text: "Are any changes to admission arrangements necessary?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            { value: "yes", text: "Yes", checked: (data["admissionChangesNeeded"] == "yes"), conditional: { html: cond_admissionChangesNeededDetails } },
+            { value: "no", text: "No", checked: (data["admissionChangesNeeded"] == "no") }
+          ]
+        }) }}
+
+        {% set cond_pupilsMoveSitesDetails %}
+          {{ govukTextarea({ id: "pupilsMoveSitesDetails", name: "pupilsMoveSitesDetails", label: { text: "Give more details" }, value: data["pupilsMoveSitesDetails"] }) }}
+        {% endset %}
+        {{ govukRadios({
+          idPrefix: "pupilsMoveSites",
+          name: "pupilsMoveSites",
+          fieldset: {
+            legend: {
+              text: "Will pupils move between sites?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            { value: "yes", text: "Yes", checked: (data["pupilsMoveSites"] == "yes"), conditional: { html: cond_pupilsMoveSitesDetails } },
+            { value: "no", text: "No", checked: (data["pupilsMoveSites"] == "no") }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

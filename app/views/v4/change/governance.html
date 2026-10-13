@@ -1,0 +1,57 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Governance and leadership – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/governance" method="post" novalidate>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: "Enter details about governance and leadership", href: "#governance" }]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">About the significant change</span>
+        {{ govukCharacterCount({
+          id: "governance",
+          name: "governance",
+          maxlength: 2000,
+          label: {
+            text: "Governance and leadership",
+            isPageHeading: true,
+            classes: "govuk-label--l"
+          },
+          hint: { html: "<p class=\"govuk-hint\">Include:</p><ul class=\"govuk-list govuk-list--bullet govuk-hint\"><li>how the trust has the appropriate experience and governance arrangements in place to support this change</li><li>details of any leadership or governance changes proposed to facilitate this change</li></ul>" },
+          errorMessage: { text: "Enter details about governance and leadership" } if errors,
+          value: data["governance"]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

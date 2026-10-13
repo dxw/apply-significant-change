@@ -1,0 +1,70 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}What do you plan to do? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/plan-age-range" method="post" novalidate>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: "Select what you plan to do", href: "#planAgeRange" }]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">About the significant change</span>
+        {% set cond_planAgeRangeOther %}
+          {{ govukTextarea({ id: "planAgeRangeOther", name: "planAgeRangeOther", label: { text: "Give more details" }, value: data["planAgeRangeOther"] }) }}
+        {% endset %}
+        {{ govukCheckboxes({
+          idPrefix: "planAgeRange",
+          name: "planAgeRange",
+          fieldset: {
+            legend: {
+              text: "What do you plan to do?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          hint: { text: "Select all that apply" },
+          errorMessage: { text: "Select what you plan to do" } if errors,
+          items: [
+            { value: "add-sixth-form", text: "Add a sixth form", checked: ("add-sixth-form" in (data["planAgeRange"] or [])) },
+            { value: "remove-sixth-form", text: "Remove a sixth form", checked: ("remove-sixth-form" in (data["planAgeRange"] or [])) },
+            { value: "remove-nursery", text: "Remove a nursery", checked: ("remove-nursery" in (data["planAgeRange"] or [])) },
+            { value: "decrease-nursery", text: "Decrease the age range of a nursery", checked: ("decrease-nursery" in (data["planAgeRange"] or [])) },
+            { value: "all-through", text: "Become an all-through school", checked: ("all-through" in (data["planAgeRange"] or [])) },
+            { value: "primary", text: "Become a primary school", checked: ("primary" in (data["planAgeRange"] or [])) },
+            { value: "infant-junior", text: "Become an infant or junior school", checked: ("infant-junior" in (data["planAgeRange"] or [])) },
+            { value: "other", text: "Other", checked: ("other" in (data["planAgeRange"] or [])), conditional: { html: cond_planAgeRangeOther } }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

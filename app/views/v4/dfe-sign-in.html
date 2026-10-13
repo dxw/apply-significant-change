@@ -1,0 +1,54 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Access the DfE Sign-in service – GOV.UK
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {{ govukTag({ text: "Prototype: mock DfE Sign-in", classes: "govuk-tag--grey govuk-!-margin-bottom-4" }) }}
+
+      <h1 class="govuk-heading-l">Access the DfE Sign-in service</h1>
+
+      <form class="form" action="/v4/dfe-sign-in-submit" method="post" novalidate>
+
+        {{ govukInput({
+          id: "sign-in-email",
+          name: "signInEmail",
+          type: "email",
+          autocomplete: "email",
+          spellcheck: false,
+          label: { text: "Log into your account" },
+          hint: { text: "Enter your email address" }
+        }) }}
+
+        {{ govukButton({
+          text: "Next"
+        }) }}
+
+      </form>
+
+      <p class="govuk-body">By signing in you accept DfE Sign-in <a class="govuk-link" href="#">terms and conditions</a>.</p>
+
+      <h2 class="govuk-heading-m">New users of DfE Sign-in</h2>
+      {{ govukButton({
+        text: "Create account",
+        classes: "govuk-button--secondary",
+        href: "#"
+      }) }}
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <h2 class="govuk-heading-s">Related actions</h2>
+      <ul class="govuk-list govuk-!-font-size-16">
+        <li><a class="govuk-link" href="#">Contact us</a></li>
+        <li><a class="govuk-link" href="#">Edit the email address in your DfE Sign-in account</a></li>
+      </ul>
+    </div>
+  </div>
+
+{% endblock %}

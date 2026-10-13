@@ -1,0 +1,61 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Are you proposing to open a new sixth form without an external Published Admission Number (PAN)? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/sixth-form-pan" method="post" novalidate>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: "Select yes or no", href: "#sixthFormPan" }]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">About the significant change</span>
+        {{ govukRadios({
+          idPrefix: "sixthFormPan",
+          name: "sixthFormPan",
+          fieldset: {
+            legend: {
+              text: "Are you proposing to open a new sixth form without an external Published Admission Number (PAN)?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          hint: { text: "This could be for a limited period or longer term" },
+          errorMessage: { text: "Select yes or no" } if errors,
+          items: [
+            { value: "yes", text: "Yes", checked: (data["sixthFormPan"] == "yes") },
+            { value: "no", text: "No", checked: (data["sixthFormPan"] == "no") }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

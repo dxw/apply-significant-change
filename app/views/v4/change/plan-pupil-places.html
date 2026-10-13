@@ -1,0 +1,64 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}What do you plan to do? – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/plan-pupil-places" method="post" novalidate>
+
+        {% if errors %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [{ text: "Select what you plan to do", href: "#planPupilPlaces" }]
+          }) }}
+        {% endif %}
+
+        <span class="govuk-caption-l">About the significant change</span>
+        {{ govukRadios({
+          idPrefix: "planPupilPlaces",
+          name: "planPupilPlaces",
+          fieldset: {
+            legend: {
+              text: "What do you plan to do?",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          errorMessage: { text: "Select what you plan to do" } if errors,
+          items: [
+            { value: "add-mainstream", text: "Add 31 or more pupil places to a mainstream academy", checked: (data["planPupilPlaces"] == "add-mainstream") },
+            { value: "remove-mainstream", text: "Remove 31 or more pupil places from a mainstream academy", checked: (data["planPupilPlaces"] == "remove-mainstream") },
+            { value: "add-ap-special", text: "Add pupil places to an AP or special academy", checked: (data["planPupilPlaces"] == "add-ap-special"), hint: { text: "21 or more pupil places or more than 20% of the overall capacity of the school, whichever is smaller" } },
+            { value: "remove-ap-special", text: "Remove pupil places from an AP or special academy", checked: (data["planPupilPlaces"] == "remove-ap-special"), hint: { text: "21 or more pupil places or more than 20% of the overall capacity of the school, whichever is smaller" } },
+            { value: "add-sen", text: "Add pupil places to an existing SEN unit or resourced provision in a mainstream or AP academy", checked: (data["planPupilPlaces"] == "add-sen"), hint: { text: "21 or more pupil places or more than 20% of the overall capacity of the school, whichever is smaller" } },
+            { value: "remove-sen", text: "Remove pupil places from an existing SEN unit or resourced provision in a mainstream or AP academy", checked: (data["planPupilPlaces"] == "remove-sen"), hint: { text: "21 or more pupil places or more than 20% of the overall capacity of the school, whichever is smaller" } }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  {% if errors %}Error: {% endif %}Special school satellite provision – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "javascript:window.history.back()"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form class="form" action="/v4/change/special-school-provision" method="post" novalidate>
+
+
+        <span class="govuk-caption-l">About the significant change</span>
+        <h1 class="govuk-heading-l">Special school satellite provision</h1>
+
+        {{ govukCharacterCount({
+          id: "satelliteManagement",
+          name: "satelliteManagement",
+          maxlength: 2000,
+          label: {
+            text: "How will the satellite provision be managed?",
+            classes: "govuk-label--m"
+          },
+          value: data["satelliteManagement"]
+        }) }}
+
+        {{ govukCharacterCount({
+          id: "satelliteResponsibility",
+          name: "satelliteResponsibility",
+          maxlength: 2000,
+          label: {
+            text: "Who is responsible for delivering the provision and for safeguarding at the satellite site?",
+            classes: "govuk-label--m"
+          },
+          value: data["satelliteResponsibility"]
+        }) }}
+
+        {% set cond_mainstreamSupportDetails %}
+          {{ govukTextarea({ id: "mainstreamSupportDetails", name: "mainstreamSupportDetails", label: { text: "Give more details" }, value: data["mainstreamSupportDetails"] }) }}
+        {% endset %}
+        {{ govukRadios({
+          idPrefix: "mainstreamSupport",
+          name: "mainstreamSupport",
+          fieldset: {
+            legend: {
+              text: "Can the mainstream school support the proposed provision?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            { value: "yes", text: "Yes", checked: (data["mainstreamSupport"] == "yes") },
+            { value: "no", text: "No", checked: (data["mainstreamSupport"] == "no"), conditional: { html: cond_mainstreamSupportDetails } }
+          ]
+        }) }}
+
+        {% set cond_costsAgreedDetails %}
+          {{ govukTextarea({ id: "costsAgreedDetails", name: "costsAgreedDetails", label: { text: "Give more details" }, value: data["costsAgreedDetails"] }) }}
+        {% endset %}
+        {{ govukRadios({
+          idPrefix: "costsAgreed",
+          name: "costsAgreed",
+          fieldset: {
+            legend: {
+              text: "Have the schools reached agreement over costs or charging for accommodation?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            { value: "yes", text: "Yes", checked: (data["costsAgreed"] == "yes") },
+            { value: "no", text: "No", checked: (data["costsAgreed"] == "no"), conditional: { html: cond_costsAgreedDetails } },
+            { value: "not-applicable", text: "Not applicable", checked: (data["costsAgreed"] == "not-applicable") }
+          ]
+        }) }}
+
+        {% set cond_sharedFacilitiesDetails %}
+          {{ govukTextarea({ id: "sharedFacilitiesDetails", name: "sharedFacilitiesDetails", label: { text: "Give more details" }, value: data["sharedFacilitiesDetails"] }) }}
+        {% endset %}
+        {{ govukRadios({
+          idPrefix: "sharedFacilities",
+          name: "sharedFacilities",
+          fieldset: {
+            legend: {
+              text: "Are there any practical implications of pupils with complex SEN needs and pupils without sharing facilities?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            { value: "yes", text: "Yes", checked: (data["sharedFacilities"] == "yes"), conditional: { html: cond_sharedFacilitiesDetails } },
+            { value: "no", text: "No", checked: (data["sharedFacilities"] == "no") }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Save and return" if isLast else "Save and continue"
+        }) }}
+
+      </form>
+
+      {{ govukDetails({
+        summaryText: "Get help with this form",
+        text: "Contact the academies helpdesk if you need help completing this form."
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

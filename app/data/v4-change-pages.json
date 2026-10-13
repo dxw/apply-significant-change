@@ -1,0 +1,361 @@
+{
+  "which-change": [
+    {
+      "name": "whichChange",
+      "label": "Which change do you want to make?",
+      "required": true,
+      "options": {
+        "boarding": "Add or remove a boarding or residential provision",
+        "satellite": "Add or remove a satellite site or move the academy to another site",
+        "specialist-base": "Add or remove a specialist base",
+        "age-range": "Change age range",
+        "gender": "Change from single sex to co-educational or co-educational to single sex",
+        "sen-type": "Change the type of SEN provision in a mainstream, special or AP academy",
+        "pupil-places": "Increase or decrease existing mainstream or SEN pupil places"
+      },
+      "details": {}
+    }
+  ],
+  "plan-boarding": [
+    {
+      "name": "planBoarding",
+      "label": "What do you plan to do?",
+      "required": true,
+      "options": {
+        "add": "Add a new boarding or residential provision",
+        "remove": "Completely remove a boarding or residential provision"
+      },
+      "details": {}
+    }
+  ],
+  "plan-satellite": [
+    {
+      "name": "planSatellite",
+      "label": "What do you plan to do?",
+      "required": true,
+      "options": {
+        "add": "Add a new satellite site",
+        "remove": "Remove a satellite site",
+        "transfer": "Transfer the academy to another site"
+      },
+      "details": {}
+    }
+  ],
+  "plan-specialist-base": [
+    {
+      "name": "planSpecialistBase",
+      "label": "What do you plan to do?",
+      "required": true,
+      "options": {
+        "add": "Add a new specialist base",
+        "remove": "Completely remove a specialist base"
+      },
+      "details": {}
+    }
+  ],
+  "plan-age-range": [
+    {
+      "name": "planAgeRange",
+      "label": "What do you plan to do?",
+      "required": true,
+      "options": {
+        "add-sixth-form": "Add a sixth form",
+        "remove-sixth-form": "Remove a sixth form",
+        "remove-nursery": "Remove a nursery",
+        "decrease-nursery": "Decrease the age range of a nursery",
+        "all-through": "Become an all-through school",
+        "primary": "Become a primary school",
+        "infant-junior": "Become an infant or junior school",
+        "other": "Other"
+      },
+      "details": {
+        "other": "planAgeRangeOther"
+      }
+    }
+  ],
+  "plan-gender": [
+    {
+      "name": "planGender",
+      "label": "What do you plan to do?",
+      "required": true,
+      "options": {
+        "to-single-sex": "Change from co-educational to single sex",
+        "to-co-ed": "Change from single sex to co-educational"
+      },
+      "details": {}
+    }
+  ],
+  "plan-pupil-places": [
+    {
+      "name": "planPupilPlaces",
+      "label": "What do you plan to do?",
+      "required": true,
+      "options": {
+        "add-mainstream": "Add 31 or more pupil places to a mainstream academy",
+        "remove-mainstream": "Remove 31 or more pupil places from a mainstream academy",
+        "add-ap-special": "Add pupil places to an AP or special academy",
+        "remove-ap-special": "Remove pupil places from an AP or special academy",
+        "add-sen": "Add pupil places to an existing SEN unit or resourced provision in a mainstream or AP academy",
+        "remove-sen": "Remove pupil places from an existing SEN unit or resourced provision in a mainstream or AP academy"
+      },
+      "details": {}
+    }
+  ],
+  "about-significant-change": [
+    {
+      "name": "reason",
+      "label": "About the significant change",
+      "required": true
+    }
+  ],
+  "governance": [
+    {
+      "name": "governance",
+      "label": "Governance and leadership",
+      "required": true
+    }
+  ],
+  "sen-impact": [
+    {
+      "name": "senImpact",
+      "label": "Will this change have an impact on SEN provision?",
+      "required": true,
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "details": {}
+    }
+  ],
+  "sen-provision": [
+    {
+      "name": "senProvision",
+      "label": "SEN provision",
+      "required": true
+    }
+  ],
+  "send-plan": [
+    {
+      "name": "sendPlan",
+      "label": "How does the change integrate with the Local Area SEND plan for the commissioning local authority or authorities?",
+      "required": true
+    }
+  ],
+  "admission-curriculum": [
+    {
+      "name": "siteUse",
+      "label": "How will the new site be used?",
+      "required": false
+    },
+    {
+      "name": "admissionChangesNeeded",
+      "label": "Are any changes to admission arrangements necessary?",
+      "required": false,
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "details": {
+        "yes": "admissionChangesNeededDetails"
+      }
+    },
+    {
+      "name": "pupilsMoveSites",
+      "label": "Will pupils move between sites?",
+      "required": false,
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "details": {
+        "yes": "pupilsMoveSitesDetails"
+      }
+    }
+  ],
+  "physical-characteristics": [
+    {
+      "name": "facilitiesUse",
+      "label": "How will facilities across the two sites be used?",
+      "required": false
+    },
+    {
+      "name": "siteAccessible",
+      "label": "Is the new site in an area that’s easily accessible to the community that the current school serves?",
+      "required": false,
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "details": {
+        "yes": "siteAccessibleDetails"
+      }
+    },
+    {
+      "name": "siteBigEnough",
+      "label": "Is the new site big enough to accommodate the intended number of pupils?",
+      "required": false,
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "details": {
+        "no": "siteBigEnoughDetails"
+      }
+    },
+    {
+      "name": "siteSuitable",
+      "label": "Is the new site suitable for the proposed curriculum?",
+      "required": false,
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "details": {
+        "no": "siteSuitableDetails"
+      }
+    }
+  ],
+  "special-school-satellite": [
+    {
+      "name": "specialSchoolSatellite",
+      "label": "Will the satellite site be used for special school provision?",
+      "required": true,
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "details": {}
+    }
+  ],
+  "special-school-provision": [
+    {
+      "name": "satelliteManagement",
+      "label": "How will the satellite provision be managed?",
+      "required": false
+    },
+    {
+      "name": "satelliteResponsibility",
+      "label": "Who is responsible for delivering the provision and for safeguarding at the satellite site?",
+      "required": false
+    },
+    {
+      "name": "mainstreamSupport",
+      "label": "Can the mainstream school support the proposed provision?",
+      "required": false,
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "details": {
+        "no": "mainstreamSupportDetails"
+      }
+    },
+    {
+      "name": "costsAgreed",
+      "label": "Have the schools reached agreement over costs or charging for accommodation?",
+      "required": false,
+      "options": {
+        "yes": "Yes",
+        "no": "No",
+        "not-applicable": "Not applicable"
+      },
+      "details": {
+        "no": "costsAgreedDetails"
+      }
+    },
+    {
+      "name": "sharedFacilities",
+      "label": "Are there any practical implications of pupils with complex SEN needs and pupils without sharing facilities?",
+      "required": false,
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "details": {
+        "yes": "sharedFacilitiesDetails"
+      }
+    }
+  ],
+  "la-placements": [
+    {
+      "name": "laPlacements",
+      "label": "Local authority placements",
+      "required": true
+    }
+  ],
+  "curriculum-offer": [
+    {
+      "name": "curriculumOffer",
+      "label": "Curriculum offer",
+      "required": true
+    }
+  ],
+  "parental-engagement": [
+    {
+      "name": "parentalEngagement",
+      "label": "Parental engagement",
+      "required": true
+    }
+  ],
+  "pupil-outcomes": [
+    {
+      "name": "pupilOutcomes",
+      "label": "Pupil outcomes and progress",
+      "required": true
+    }
+  ],
+  "integration": [
+    {
+      "name": "integration",
+      "label": "Integration with the school community",
+      "required": true
+    }
+  ],
+  "large-specialist-base": [
+    {
+      "name": "largeSpecialistBase",
+      "label": "Large specialist base (optional)",
+      "required": false
+    }
+  ],
+  "adding-sixth-form": [
+    {
+      "name": "addingSixthForm",
+      "label": "Adding a sixth form",
+      "required": true
+    }
+  ],
+  "sixth-form-pan": [
+    {
+      "name": "sixthFormPan",
+      "label": "Are you proposing to open a new sixth form without an external Published Admission Number (PAN)?",
+      "required": true,
+      "options": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "details": {}
+    }
+  ],
+  "removing-sixth-form": [
+    {
+      "name": "removingSixthForm",
+      "label": "Removing a sixth form",
+      "required": true
+    }
+  ],
+  "pupil-equity": [
+    {
+      "name": "pupilEquity",
+      "label": "Pupil equity considerations",
+      "required": true
+    }
+  ],
+  "capacity": [
+    {
+      "name": "capacity",
+      "label": "How will the academy’s capacity change?",
+      "required": true
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Check your answers – Tier 1 significant change application – GOV.UK
+{% endblock %}
+
+{% block containerStart %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/v4/task-list"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">Check your answers before submitting your application</h1>
+
+      {% if not allComplete %}
+        {{ govukWarningText({
+          text: "You need to complete all sections before you can submit your application.",
+          iconFallbackText: "Warning"
+        }) }}
+        <p class="govuk-body"><a class="govuk-link" href="/v4/task-list">Return to task list</a></p>
+      {% endif %}
+
+      {% for section in summary %}
+        <h2 class="govuk-heading-m">{{ section.title }}</h2>
+        {{ govukSummaryList({ rows: section.rows }) }}
+      {% endfor %}
+
+      <h2 class="govuk-heading-m">Now submit your application</h2>
+      <p class="govuk-body">By submitting this application you are confirming that, to the best of your knowledge, the details you are providing are correct.</p>
+
+      <form class="form" action="/v4/confirmation" method="post">
+        {{ govukButton({
+          text: "Accept and submit",
+          disabled: not allComplete
+        }) }}
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}
