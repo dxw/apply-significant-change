@@ -1,4 +1,24 @@
 //
+// Routes for the "Apply to make a tier 1 significant change" prototype.
+//
+// There are three versions of the journey in this one file:
+//
+//   1. Linear version  – /start          views in app/views/        (older, not being developed)
+//   2. V3 task list    – /v3/start       views in app/views/v3/     (older, kept for comparison)
+//   3. V4 task list    – /v4/start       views in app/views/v4/     (CURRENT – work here)
+//
+// V4 is built from the Figma file "Tier 1 significant change – Trust application
+// journey – working file" (frame "Tier 1 Sig Change as a task list V3 – WORKING
+// VERSION FOR PROTOTYPE"). See README.md for how V4 hangs together.
+//
+// How the Prototype Kit works here:
+// - Every form field is saved automatically into req.session.data using its `name`.
+// - Each page's form posts to a route below, which checks the answer and redirects.
+// - If a required answer is missing, the route re-renders the page with { errors: true }
+//   and the page shows its own error summary and message.
+// - The three versions share some session data names (for example 'reason', 'trustName'),
+//   so clear data (link in the footer) when switching between versions.
+//
 // For guidance on how to create routes see:
 // https://prototype-kit.service.gov.uk/docs/create-routes
 //
@@ -7,7 +27,8 @@ const govukPrototypeKit = require('govuk-prototype-kit')
 const router = govukPrototypeKit.requests.setupRouter()
 
 // ============================================================
-// Linear version
+// LINEAR VERSION (older)
+// One page per question, starting at /start. Not being developed any more.
 // ============================================================
 
 // --- Has the change already been made? ---
@@ -360,9 +381,13 @@ router.post('/confirmation', function (req, res) {
 })
 
 // ============================================================
-// V3 – task list version (views in app/views/v3/)
+// V3 TASK LIST (older, views in app/views/v3/)
+// Kept so you can compare with V4. Not being developed any more.
 // ============================================================
 
+// Fake trust and academy lookup data for the type-ahead search pages.
+// V4 uses these too, so don't delete them if you remove V3.
+// To make a trust or academy searchable, add it here.
 const v3Trusts = [
   { name: 'Delta Academies Trust', companiesHouseNumber: '07386086' },
   { name: 'REAch2 Academy Trust', companiesHouseNumber: '08452281' },
@@ -860,13 +885,30 @@ router.post('/v3/confirmation', function (req, res) {
 })
 
 // ============================================================
-// V4 – task list version built from the Figma "V3 working file"
-// (views in app/views/v4/, significant change pages in app/views/v4/change/)
-// Task status is stored in session as v4-task-<id> = 'in-progress' | 'completed'
+// V4 TASK LIST (CURRENT)
+//
+// Journey: /v4/start -> before-you-apply -> dfe-sign-in -> dfe-sign-in-password
+//          -> task-list -> (tasks) -> check-answers -> confirmation
+//
+// Views:   app/views/v4/          most pages
+//          app/views/v4/change/   the "About the significant change" pages, which
+//                                 branch by type of change (see v4ChangePages below)
+//
+// Task status is kept in session data as v4-task-<id>:
+//   (not set)     -> "Not yet started"
+//   'in-progress' -> "Incomplete" (set automatically when any page in the task is submitted)
+//   'completed'   -> "Completed"  (set by v4Done() at the end of the task)
 // ============================================================
 
+// Questions and answer labels for the /v4/change/ pages. Used to check required
+// answers and to build the "Significant change details" rows on check answers.
+// If you change a question or option on a change page, update it here too.
 const V4_CHANGE_PAGES = require('./data/v4-change-pages.json')
 
+// The task list. Each section has a heading and its tasks.
+// Each task is [task id, link text, first page of the task (under /v4/)].
+// To add a task: add it here, add its pages to V4_PAGE_TASKS, end its last route
+// with v4Done(req, res, '<task id>'), and add its answers to v4Summary() for check answers.
 const V4_SECTIONS = [
   { id: 'check', title: 'Check before you start', items: [['consultation-status', 'Consultation status', 'has-change-been-made']] },
   { id: 'trust-academy', title: 'Trust and academy', items: [['trust', 'Trust details', 'trust-name'], ['academy', 'Academy details', 'academy-name'], ['contact', 'Contact details', 'your-role']] },
@@ -879,7 +921,8 @@ const V4_SECTIONS = [
   { id: 'psed', title: 'Public Sector Equality Duty Statement', items: [['psed', 'Public Sector Equality Duty Statement', 'equality-duty']] }
 ]
 
-// Which task each page belongs to, so a task shows as "Incomplete" once someone has started it
+// Which task each page belongs to (matched against the URL after /v4/),
+// so a task shows as "Incomplete" once someone has submitted one of its pages.
 const V4_PAGE_TASKS = [
   [/^(has-change-been-made|contacted-do|consultation-completed)/, 'consultation-status'],
   [/^(trust-name|confirm-trust)/, 'trust'],
@@ -901,16 +944,19 @@ const V4_PAGE_TASKS = [
   [/^equality-duty/, 'psed']
 ]
 
+// Get a task's status: undefined, 'in-progress' or 'completed'
 function v4Task (data, id) {
   return data['v4-task-' + id]
 }
 
+// Mark a task as completed and go back to the task list.
+// Call this from the last route in a task.
 function v4Done (req, res, task) {
   req.session.data['v4-task-' + task] = 'completed'
   res.redirect('/v4/task-list')
 }
 
-// Mark a task as started when any of its pages is submitted
+// Runs before every V4 form submission: marks the page's task as started.
 router.post(/^\/v4\/.+/, function (req, res, next) {
   const page = req.path.replace(/^\/v4\//, '')
   const match = V4_PAGE_TASKS.find(([pattern]) => pattern.test(page))
@@ -918,6 +964,8 @@ router.post(/^\/v4\/.+/, function (req, res, next) {
   next()
 })
 
+// Task list: builds the GOV.UK task list items and statuses from V4_SECTIONS.
+// There's no locking: every task can be started in any order (as in the Figma).
 router.get('/v4/task-list', function (req, res) {
   const data = req.session.data
   const sections = V4_SECTIONS.map(section => ({
@@ -935,7 +983,10 @@ router.get('/v4/task-list', function (req, res) {
   res.render('v4/task-list', { sections, trustName: data['trustName'], academyName: data['academyName'] })
 })
 
-// --- Start, interruption page and DfE Sign-in (mock) ---
+// --- Start, "Before you apply" interruption page and DfE Sign-in ---
+// start.html and before-you-apply.html are plain pages with links, so they need no routes.
+// DfE Sign-in is a mock of the real service's two screens (email, then password).
+// Any password works and it's deleted straight away.
 router.post('/v4/dfe-sign-in-submit', function (req, res) {
   if (!(req.session.data['signInEmail'] || '').trim()) return res.render('v4/dfe-sign-in', { errors: true })
   res.redirect('/v4/dfe-sign-in-password')
@@ -947,7 +998,10 @@ router.post('/v4/dfe-sign-in-password-submit', function (req, res) {
   res.redirect('/v4/task-list')
 })
 
-// --- Consultation status ---
+// --- Consultation status (Check before you start) ---
+// Change already made? Yes -> told your DO? No -> "contact your DO" stop page.
+// Consultation completed? No -> "start a consultation" stop page, unless the change
+// has been made and they've told their DO (review feedback, 13 Oct).
 router.post('/v4/has-change-been-made-submit', function (req, res) {
   const answer = req.session.data['hasChangeBeenMade']
   if (!answer) return res.render('v4/has-change-been-made', { errors: true })
@@ -969,7 +1023,8 @@ router.post('/v4/consultation-completed-next-page', function (req, res) {
   v4Done(req, res, 'consultation-status')
 })
 
-// --- Trust ---
+// --- Trust details ---
+// Type-ahead search over v3Trusts, then "Is this the right trust?"
 router.get('/v4/trust-name', function (req, res) {
   res.render('v4/trust-name', { trusts: v3Trusts })
 })
@@ -990,7 +1045,8 @@ router.post('/v4/confirm-trust-submit', function (req, res) {
   v4Done(req, res, 'trust')
 })
 
-// --- Academy ---
+// --- Academy details ---
+// Type-ahead search over v3Academies, then "Is this the right academy?"
 router.get('/v4/academy-name', function (req, res) {
   res.render('v4/academy-name', { academies: v3Academies })
 })
@@ -1012,7 +1068,10 @@ router.post('/v4/confirm-academy-submit', function (req, res) {
   v4Done(req, res, 'academy')
 })
 
-// --- Contact details ---
+// --- Contact details: role -> full name -> email addresses -> phone number ---
+
+// Turns a checkbox answer into a clean list. The kit adds a hidden '_unchecked'
+// value to checkbox groups, and a single answer comes through as a string.
 function v4List (value) {
   return (Array.isArray(value) ? value : [value]).filter(v => v && v !== '_unchecked')
 }
@@ -1038,8 +1097,16 @@ router.post('/v4/phone-number-submit', function (req, res) {
 })
 
 // --- About the significant change ---
-// The pages someone sees depend on the type of change, what they plan to do and some answers on the way.
-// Edit this function to change the order or branching of the significant change pages.
+// This one task covers "Which change do you want to make?", "What do you plan to do?"
+// and then the pages for that type of change (the 7 routes in the Figma).
+//
+// Every page lives at /v4/change/<page> (views in app/views/v4/change/) and posts back
+// to the same URL. One pair of routes below handles all of them: it checks required
+// answers, then goes to the next page in the list from v4ChangePages().
+// The last page's button says "Save and return" and finishes the task.
+
+// Type of change (whichChange value) -> its "What do you plan to do?" page and field.
+// 'sen-type' has no plan page.
 const V4_PLAN_PAGES = {
   'boarding': ['plan-boarding', 'planBoarding'],
   'satellite': ['plan-satellite', 'planSatellite'],
@@ -1049,6 +1116,10 @@ const V4_PLAN_PAGES = {
   'pupil-places': ['plan-pupil-places', 'planPupilPlaces']
 }
 
+// Returns the ordered list of /v4/change/ pages for someone's answers so far.
+// Edit this function to change the order or branching of the significant change pages.
+// The list is worked out again on every page, so answers like "SEN impact: yes"
+// add pages on the fly.
 function v4ChangePages (data) {
   const type = data['whichChange']
   const pages = ['which-change']
@@ -1107,6 +1178,8 @@ function v4ChangePages (data) {
   return pages
 }
 
+// Returns the first required field on a change page that hasn't been answered.
+// Required = the field has an error message in v4-change-pages.json.
 function v4MissingAnswer (page, data) {
   const fields = V4_CHANGE_PAGES[page] || []
   return fields.find(f => {
@@ -1116,6 +1189,7 @@ function v4MissingAnswer (page, data) {
   })
 }
 
+// Show a change page. isLast swaps the button to "Save and return".
 router.get('/v4/change/:page', function (req, res, next) {
   const page = req.params.page
   if (!V4_CHANGE_PAGES[page]) return next()
@@ -1123,6 +1197,7 @@ router.get('/v4/change/:page', function (req, res, next) {
   res.render('v4/change/' + page, { isLast: pages[pages.length - 1] === page && page !== 'which-change' })
 })
 
+// Save a change page, then go to the next page in the route or back to the task list.
 router.post('/v4/change/:page', function (req, res, next) {
   const page = req.params.page
   const data = req.session.data
@@ -1139,7 +1214,8 @@ router.post('/v4/change/:page', function (req, res, next) {
   v4Done(req, res, 'change-details')
 })
 
-// --- Effective date ---
+// --- Effective date of the change ---
+// Shows a separate error for a missing day, month or year (as in the Figma).
 router.post('/v4/effective-date-next', function (req, res) {
   const data = req.session.data
   const parts = ['day', 'month', 'year'].filter(p => !(data['effective-date-' + p] || '').trim())
@@ -1222,7 +1298,7 @@ router.post('/v4/religious-consent-explain-submit', function (req, res) {
   v4Done(req, res, 'religious-consent')
 })
 
-// --- Planning permission ---
+// --- Planning permission: required? -> obtained? -> if not, why not ---
 router.post('/v4/planning-required-next', function (req, res) {
   const answer = req.session.data['planningRequired']
   if (!answer) return res.render('v4/planning-required', { errors: true })
@@ -1242,7 +1318,7 @@ router.post('/v4/planning-explain-submit', function (req, res) {
   v4Done(req, res, 'planning')
 })
 
-// --- Land transaction ---
+// --- Land transaction proposal: required? -> submitted? -> if not, why not ---
 router.post('/v4/land-transaction-required-next', function (req, res) {
   const answer = req.session.data['landTransactionRequired']
   if (!answer) return res.render('v4/land-transaction-required', { errors: true })
@@ -1293,6 +1369,7 @@ router.post('/v4/ofsted-outcome-submit', function (req, res) {
 })
 
 // --- Intervention measures ---
+// Eligible? Yes -> why -> independent school standards (if no, why) -> fire safety (if no, why)
 router.post('/v4/intervention-eligible-next', function (req, res) {
   const answer = req.session.data['interventionEligible']
   if (!answer) return res.render('v4/intervention-eligible', { errors: true })
@@ -1329,6 +1406,7 @@ router.post('/v4/fire-safety-explain-submit', function (req, res) {
 })
 
 // --- Public Sector Equality Duty ---
+// Only "Likely to affect disproportionately..." asks how the impact will be mitigated.
 router.post('/v4/equality-duty-next', function (req, res) {
   const answer = req.session.data['equalityDuty']
   if (!answer) return res.render('v4/equality-duty', { errors: true })
@@ -1342,6 +1420,7 @@ router.post('/v4/equality-duty-mitigate-submit', function (req, res) {
 })
 
 // --- Check answers and submit ---
+// "Accept and submit" is disabled until every task is completed.
 function v4AllComplete (data) {
   return V4_SECTIONS.every(section => section.items.every(([id]) => v4Task(data, id) === 'completed'))
 }
@@ -1358,6 +1437,9 @@ const V4_LABELS = {
   }
 }
 
+// Builds the check answers page: one summary list per task list section.
+// Rows only appear for questions the person was shown. The significant change rows
+// come from v4ChangePages() and v4-change-pages.json, so they follow the route.
 function v4Summary (data) {
   const sections = []
   let rows
