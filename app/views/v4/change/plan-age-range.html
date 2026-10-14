@@ -27,7 +27,7 @@
 
         <span class="govuk-caption-l">About the significant change</span>
         {% set cond_planAgeRangeOther %}
-          {{ govukTextarea({ id: "planAgeRangeOther", name: "planAgeRangeOther", label: { text: "Give more details" }, value: data["planAgeRangeOther"] }) }}
+          {{ govukCharacterCount({ id: "planAgeRangeOther", name: "planAgeRangeOther", maxwords: 200, label: { text: "Give more details" }, value: data["planAgeRangeOther"] }) }}
         {% endset %}
         {{ govukRadios({
           idPrefix: "planAgeRange",

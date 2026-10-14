@@ -1,7 +1,25 @@
 {% extends "layouts/main.html" %}
 
+{# Prototype mock of DfE Sign-in: email address step #}
+
 {% block pageTitle %}
-  Access the DfE Sign-in service – GOV.UK
+  {% if errors %}Error: {% endif %}Department for Education Sign-in – DfE Sign-in – GOV.UK
+{% endblock %}
+
+{% block header %}
+  {{ govukHeader({
+    homepageUrl: "#",
+    productName: "DfE Sign-In",
+    classes: "app-dfe-sign-in-header",
+    containerClasses: "govuk-width-container"
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Beta" },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
 {% endblock %}
 
 {% block content %}
@@ -9,9 +27,16 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      {{ govukTag({ text: "Prototype: mock DfE Sign-in", classes: "govuk-tag--grey govuk-!-margin-bottom-4" }) }}
+      {% if errors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: [{ text: "Enter your email address", href: "#sign-in-email" }]
+        }) }}
+      {% endif %}
 
-      <h1 class="govuk-heading-l">Access the DfE Sign-in service</h1>
+      <h1 class="govuk-heading-xl">Department for Education Sign-in</h1>
+
+      <p class="govuk-body">Sign-in to access DfE online services.</p>
 
       <form class="form" action="/v4/dfe-sign-in-submit" method="post" novalidate>
 
@@ -21,33 +46,33 @@
           type: "email",
           autocomplete: "email",
           spellcheck: false,
-          label: { text: "Log into your account" },
-          hint: { text: "Enter your email address" }
+          label: { text: "Email address", classes: "govuk-label--s" },
+          errorMessage: { text: "Enter your email address" } if errors,
+          value: data['signInEmail']
         }) }}
 
-        {{ govukButton({
-          text: "Next"
+        {{ govukInsetText({
+          html: 'By signing in you accept <a class="govuk-link" href="#">DfE Sign-in terms and conditions</a>.'
         }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+          {{ govukButton({
+            text: "Create account",
+            classes: "govuk-button--secondary",
+            href: "#"
+          }) }}
+        </div>
 
       </form>
 
-      <p class="govuk-body">By signing in you accept DfE Sign-in <a class="govuk-link" href="#">terms and conditions</a>.</p>
-
-      <h2 class="govuk-heading-m">New users of DfE Sign-in</h2>
-      {{ govukButton({
-        text: "Create account",
-        classes: "govuk-button--secondary",
-        href: "#"
+      {{ govukDetails({
+        summaryText: "Services accessed using DfE Sign-in",
+        text: "DfE Sign-in gives you access to Department for Education services, including the service to apply to make a significant change to an academy."
       }) }}
 
-    </div>
-
-    <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-heading-s">Related actions</h2>
-      <ul class="govuk-list govuk-!-font-size-16">
-        <li><a class="govuk-link" href="#">Contact us</a></li>
-        <li><a class="govuk-link" href="#">Edit the email address in your DfE Sign-in account</a></li>
-      </ul>
     </div>
   </div>
 

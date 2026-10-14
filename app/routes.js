@@ -937,6 +937,13 @@ router.get('/v4/task-list', function (req, res) {
 
 // --- Start, interruption page and DfE Sign-in (mock) ---
 router.post('/v4/dfe-sign-in-submit', function (req, res) {
+  if (!(req.session.data['signInEmail'] || '').trim()) return res.render('v4/dfe-sign-in', { errors: true })
+  res.redirect('/v4/dfe-sign-in-password')
+})
+
+router.post('/v4/dfe-sign-in-password-submit', function (req, res) {
+  if (!req.session.data['signInPassword']) return res.render('v4/dfe-sign-in-password', { errors: true })
+  delete req.session.data['signInPassword'] // never keep the password in session data
   res.redirect('/v4/task-list')
 })
 

@@ -20,7 +20,6 @@
 
         <span class="govuk-caption-l">Consultation dates</span>
         <h1 class="govuk-heading-l">Consultation dates</h1>
-        <p class="govuk-body">If you have not started or completed a consultation leave this blank.</p>
 
         {% if errors %}
           {{ govukErrorSummary({
@@ -90,6 +89,10 @@
           errorMessage: {
             text: "End date of consultation must include a day"
           } if errors
+        }) }}
+
+        {{ govukInsetText({
+          text: "If you have not started or completed a consultation leave this blank"
         }) }}
 
         {{ govukButton({

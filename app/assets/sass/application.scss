@@ -4,3 +4,27 @@
 // 
 
 // Add extra styles here
+
+// V4: mock DfE Sign-in pages (black header with a blue bar, like the real DfE Sign-in)
+.app-dfe-sign-in-header {
+  background-color: #0b0c0c;
+  border-bottom: 10px solid #1d70b8;
+
+  .govuk-header__container {
+    border-bottom: 0;
+  }
+
+  .govuk-header__product-name {
+    margin-left: 4em;
+    font-weight: 700;
+  }
+}
+
+.app-dfe-sign-in-email {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #b1b4b6;
+}

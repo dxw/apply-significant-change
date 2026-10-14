@@ -25,7 +25,7 @@
         {{ govukCharacterCount({
           id: "facilitiesUse",
           name: "facilitiesUse",
-          maxlength: 2000,
+          maxwords: 200,
           label: {
             text: "How will facilities across the two sites be used?",
             classes: "govuk-label--m"
@@ -34,7 +34,7 @@
         }) }}
 
         {% set cond_siteAccessibleDetails %}
-          {{ govukTextarea({ id: "siteAccessibleDetails", name: "siteAccessibleDetails", label: { text: "Give more details" }, value: data["siteAccessibleDetails"] }) }}
+          {{ govukCharacterCount({ id: "siteAccessibleDetails", name: "siteAccessibleDetails", maxwords: 200, label: { text: "Give more details" }, value: data["siteAccessibleDetails"] }) }}
         {% endset %}
         {{ govukRadios({
           idPrefix: "siteAccessible",
@@ -52,7 +52,7 @@
         }) }}
 
         {% set cond_siteBigEnoughDetails %}
-          {{ govukTextarea({ id: "siteBigEnoughDetails", name: "siteBigEnoughDetails", label: { text: "Give more details" }, value: data["siteBigEnoughDetails"] }) }}
+          {{ govukCharacterCount({ id: "siteBigEnoughDetails", name: "siteBigEnoughDetails", maxwords: 200, label: { text: "Give more details" }, value: data["siteBigEnoughDetails"] }) }}
         {% endset %}
         {{ govukRadios({
           idPrefix: "siteBigEnough",
@@ -70,7 +70,7 @@
         }) }}
 
         {% set cond_siteSuitableDetails %}
-          {{ govukTextarea({ id: "siteSuitableDetails", name: "siteSuitableDetails", label: { text: "Give more details" }, value: data["siteSuitableDetails"] }) }}
+          {{ govukCharacterCount({ id: "siteSuitableDetails", name: "siteSuitableDetails", maxwords: 200, label: { text: "Give more details" }, value: data["siteSuitableDetails"] }) }}
         {% endset %}
         {{ govukRadios({
           idPrefix: "siteSuitable",

@@ -40,7 +40,7 @@
             classes: "govuk-label--l"
           },
           hint: {
-            text: "The document you upload will be scanned for viruses. If you have not started or completed a consultation leave this blank."
+            text: "The document you upload will be scanned for viruses."
           },
           errorMessage: {
             text: "Select a file"
@@ -48,6 +48,10 @@
         }) }}
 
 
+
+        {{ govukInsetText({
+          text: "If you have not started or completed a consultation leave this blank"
+        }) }}
 
         {{ govukButton({
           text: "Save and return"

@@ -34,14 +34,14 @@
         {{ govukCharacterCount({
           id: "consultation-summary",
           name: "consultationSummary",
-          maxlength: 2000,
+          maxwords: 200,
           label: {
             text: "Summary of the consultation outcomes",
             isPageHeading: true,
             classes: "govuk-label--l"
           },
           hint: {
-            text: "Include who was consulted, the outcome, the number of positive and negative responses and any issues identified and how they will be mitigated. If you have not started or completed a consultation leave this blank."
+            text: "Include who was consulted, the outcome, the number of positive and negative responses and any issues identified and how they will be mitigated."
           },
           errorMessage: {
             text: "Enter a summary of the consultation outcomes"
@@ -49,6 +49,10 @@
         }) }}
 
 
+
+        {{ govukInsetText({
+          text: "If you have not started or completed a consultation leave this blank"
+        }) }}
 
         {{ govukButton({
           text: "Save and return"

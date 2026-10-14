@@ -25,7 +25,7 @@
         {{ govukCharacterCount({
           id: "satelliteManagement",
           name: "satelliteManagement",
-          maxlength: 2000,
+          maxwords: 200,
           label: {
             text: "How will the satellite provision be managed?",
             classes: "govuk-label--m"
@@ -36,7 +36,7 @@
         {{ govukCharacterCount({
           id: "satelliteResponsibility",
           name: "satelliteResponsibility",
-          maxlength: 2000,
+          maxwords: 200,
           label: {
             text: "Who is responsible for delivering the provision and for safeguarding at the satellite site?",
             classes: "govuk-label--m"
@@ -45,7 +45,7 @@
         }) }}
 
         {% set cond_mainstreamSupportDetails %}
-          {{ govukTextarea({ id: "mainstreamSupportDetails", name: "mainstreamSupportDetails", label: { text: "Give more details" }, value: data["mainstreamSupportDetails"] }) }}
+          {{ govukCharacterCount({ id: "mainstreamSupportDetails", name: "mainstreamSupportDetails", maxwords: 200, label: { text: "Give more details" }, value: data["mainstreamSupportDetails"] }) }}
         {% endset %}
         {{ govukRadios({
           idPrefix: "mainstreamSupport",
@@ -63,7 +63,7 @@
         }) }}
 
         {% set cond_costsAgreedDetails %}
-          {{ govukTextarea({ id: "costsAgreedDetails", name: "costsAgreedDetails", label: { text: "Give more details" }, value: data["costsAgreedDetails"] }) }}
+          {{ govukCharacterCount({ id: "costsAgreedDetails", name: "costsAgreedDetails", maxwords: 200, label: { text: "Give more details" }, value: data["costsAgreedDetails"] }) }}
         {% endset %}
         {{ govukRadios({
           idPrefix: "costsAgreed",
@@ -82,7 +82,7 @@
         }) }}
 
         {% set cond_sharedFacilitiesDetails %}
-          {{ govukTextarea({ id: "sharedFacilitiesDetails", name: "sharedFacilitiesDetails", label: { text: "Give more details" }, value: data["sharedFacilitiesDetails"] }) }}
+          {{ govukCharacterCount({ id: "sharedFacilitiesDetails", name: "sharedFacilitiesDetails", maxwords: 200, label: { text: "Give more details" }, value: data["sharedFacilitiesDetails"] }) }}
         {% endset %}
         {{ govukRadios({
           idPrefix: "sharedFacilities",

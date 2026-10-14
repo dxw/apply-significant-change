@@ -25,7 +25,7 @@
         {{ govukCharacterCount({
           id: "siteUse",
           name: "siteUse",
-          maxlength: 2000,
+          maxwords: 200,
           label: {
             text: "How will the new site be used?",
             classes: "govuk-label--m"
@@ -34,7 +34,7 @@
         }) }}
 
         {% set cond_admissionChangesNeededDetails %}
-          {{ govukTextarea({ id: "admissionChangesNeededDetails", name: "admissionChangesNeededDetails", label: { text: "Give more details" }, value: data["admissionChangesNeededDetails"] }) }}
+          {{ govukCharacterCount({ id: "admissionChangesNeededDetails", name: "admissionChangesNeededDetails", maxwords: 200, label: { text: "Give more details" }, value: data["admissionChangesNeededDetails"] }) }}
         {% endset %}
         {{ govukRadios({
           idPrefix: "admissionChangesNeeded",
@@ -52,7 +52,7 @@
         }) }}
 
         {% set cond_pupilsMoveSitesDetails %}
-          {{ govukTextarea({ id: "pupilsMoveSitesDetails", name: "pupilsMoveSitesDetails", label: { text: "Give more details" }, value: data["pupilsMoveSitesDetails"] }) }}
+          {{ govukCharacterCount({ id: "pupilsMoveSitesDetails", name: "pupilsMoveSitesDetails", maxwords: 200, label: { text: "Give more details" }, value: data["pupilsMoveSitesDetails"] }) }}
         {% endset %}
         {{ govukRadios({
           idPrefix: "pupilsMoveSites",
